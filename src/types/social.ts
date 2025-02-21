@@ -7,6 +7,12 @@ export interface User {
   avatar: string;
   followers: number;
   following: number;
+  bio?: string;
+  location?: string;
+  ministries?: string[];
+  prayerRequests?: PrayerRequest[];
+  testimonials?: Testimonial[];
+  coverImage?: string;
 }
 
 export interface Post {
@@ -28,4 +34,20 @@ export interface Comment {
   likes: number;
   timestamp: string;
   replies?: Comment[];
+}
+
+export interface PrayerRequest {
+  id: string;
+  content: string;
+  author: User;
+  timestamp: string;
+  prayerCount: number;
+  isPrivate: boolean;
+}
+
+export interface Testimonial {
+  id: string;
+  content: string;
+  timestamp: string;
+  category: string;
 }
