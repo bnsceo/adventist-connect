@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { ProfileHeader } from "@/components/social/ProfileHeader";
 import { PostCard } from "@/components/social/PostCard";
@@ -7,9 +6,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { Post, User } from "@/types/social";
 import { PrayerRequest, Testimonial } from "@/types/social";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Heart, MessageCircle, Book, PrayingHands } from "lucide-react";
+import { Heart, MessageCircle, Book } from "lucide-react";
 
-// Sample data (replace with Supabase data later)
 const profileUser: User = {
   id: "1",
   name: "Sarah Johnson",
@@ -107,7 +105,7 @@ const Profile = () => {
               Posts
             </TabsTrigger>
             <TabsTrigger value="prayer" className="gap-2">
-              <PrayingHands className="w-4 h-4" />
+              <Heart className="w-4 h-4" />
               Prayer Requests
             </TabsTrigger>
             <TabsTrigger value="testimonials" className="gap-2">
