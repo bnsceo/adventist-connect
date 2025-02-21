@@ -9,6 +9,51 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      churches: {
+        Row: {
+          admin_user_id: string | null
+          contact_email: string | null
+          contact_phone: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          location: string | null
+          mission_statement: string | null
+          name: string
+          service_times: Json | null
+          updated_at: string | null
+          website_url: string | null
+        }
+        Insert: {
+          admin_user_id?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          location?: string | null
+          mission_statement?: string | null
+          name: string
+          service_times?: Json | null
+          updated_at?: string | null
+          website_url?: string | null
+        }
+        Update: {
+          admin_user_id?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          location?: string | null
+          mission_statement?: string | null
+          name?: string
+          service_times?: Json | null
+          updated_at?: string | null
+          website_url?: string | null
+        }
+        Relationships: []
+      }
       comments: {
         Row: {
           content: string
@@ -44,6 +89,56 @@ export type Database = {
           },
         ]
       }
+      conversation_participants: {
+        Row: {
+          conversation_id: string
+          joined_at: string | null
+          user_id: string
+        }
+        Insert: {
+          conversation_id: string
+          joined_at?: string | null
+          user_id: string
+        }
+        Update: {
+          conversation_id?: string
+          joined_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversation_participants_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      conversations: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_group: boolean | null
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_group?: boolean | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_group?: boolean | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       devotionals: {
         Row: {
           created_at: string | null
@@ -73,6 +168,91 @@ export type Database = {
           verse?: string
         }
         Relationships: []
+      }
+      event_attendees: {
+        Row: {
+          created_at: string | null
+          event_id: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          event_id: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          event_id?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_attendees_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          church_id: string | null
+          created_at: string | null
+          creator_id: string | null
+          description: string | null
+          end_time: string | null
+          event_type: string
+          id: string
+          is_online: boolean | null
+          location: string | null
+          online_url: string | null
+          start_time: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          church_id?: string | null
+          created_at?: string | null
+          creator_id?: string | null
+          description?: string | null
+          end_time?: string | null
+          event_type: string
+          id?: string
+          is_online?: boolean | null
+          location?: string | null
+          online_url?: string | null
+          start_time: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          church_id?: string | null
+          created_at?: string | null
+          creator_id?: string | null
+          description?: string | null
+          end_time?: string | null
+          event_type?: string
+          id?: string
+          is_online?: boolean | null
+          location?: string | null
+          online_url?: string | null
+          start_time?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_church_id_fkey"
+            columns: ["church_id"]
+            isOneToOne: false
+            referencedRelation: "churches"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       likes: {
         Row: {
@@ -109,6 +289,87 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      messages: {
+        Row: {
+          attachment_urls: Json | null
+          content: string
+          conversation_id: string | null
+          created_at: string | null
+          id: string
+          parent_message_id: string | null
+          sender_id: string | null
+        }
+        Insert: {
+          attachment_urls?: Json | null
+          content: string
+          conversation_id?: string | null
+          created_at?: string | null
+          id?: string
+          parent_message_id?: string | null
+          sender_id?: string | null
+        }
+        Update: {
+          attachment_urls?: Json | null
+          content?: string
+          conversation_id?: string | null
+          created_at?: string | null
+          id?: string
+          parent_message_id?: string | null
+          sender_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_parent_message_id_fkey"
+            columns: ["parent_message_id"]
+            isOneToOne: false
+            referencedRelation: "messages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          content: string | null
+          created_at: string | null
+          id: string
+          is_read: boolean | null
+          reference_id: string | null
+          reference_type: string | null
+          title: string
+          type: string
+          user_id: string | null
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          reference_id?: string | null
+          reference_type?: string | null
+          title: string
+          type: string
+          user_id?: string | null
+        }
+        Update: {
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          reference_id?: string | null
+          reference_type?: string | null
+          title?: string
+          type?: string
+          user_id?: string | null
+        }
+        Relationships: []
       }
       posts: {
         Row: {

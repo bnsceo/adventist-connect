@@ -51,3 +51,72 @@ export interface Testimonial {
   timestamp: string;
   category: string;
 }
+
+export interface Church {
+  id: string;
+  name: string;
+  description?: string;
+  missionStatement?: string;
+  location?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  websiteUrl?: string;
+  serviceTimes: ServiceTime[];
+  adminUserId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ServiceTime {
+  day: string;
+  time: string;
+  type: string;
+}
+
+export interface Event {
+  id: string;
+  title: string;
+  description?: string;
+  eventType: string;
+  startTime: string;
+  endTime?: string;
+  location?: string;
+  isOnline: boolean;
+  onlineUrl?: string;
+  churchId?: string;
+  creatorId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Conversation {
+  id: string;
+  isGroup: boolean;
+  title?: string;
+  createdAt: string;
+  updatedAt: string;
+  participants: User[];
+  lastMessage?: Message;
+}
+
+export interface Message {
+  id: string;
+  conversationId: string;
+  sender: User;
+  content: string;
+  attachmentUrls: string[];
+  createdAt: string;
+  parentMessageId?: string;
+}
+
+export interface Notification {
+  id: string;
+  userId: string;
+  type: string;
+  title: string;
+  content?: string;
+  referenceId?: string;
+  referenceType?: string;
+  isRead: boolean;
+  createdAt: string;
+}
