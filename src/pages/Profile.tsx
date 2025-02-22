@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { ProfileHeader } from "@/components/social/ProfileHeader";
 import { PostCard } from "@/components/social/PostCard";
@@ -7,6 +8,13 @@ import { Post, User } from "@/types/social";
 import { PrayerRequest, Testimonial } from "@/types/social";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Heart, MessageCircle, Book } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { ProfileEditForm } from "@/components/social/ProfileEditForm";
 
 const profileUser: User = {
   id: "1",
@@ -58,16 +66,22 @@ const testimonials: Testimonial[] = [
 const Profile = () => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("posts");
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [user, setUser] = useState(profileUser);
 
   const handleEditProfile = () => {
+    setIsEditDialogOpen(true);
+  };
+
+  const handleSaveProfile = (updatedUser: User) => {
+    setUser(updatedUser);
+    setIsEditDialogOpen(false);
     toast({
-      title: "Edit Profile",
-      description: "Profile editing feature coming soon!",
+      description: "Profile updated successfully",
     });
   };
 
   const handleLike = (postId: string) => {
-    // Handle like action
     toast({
       description: "Post liked successfully",
     });
@@ -89,10 +103,23 @@ const Profile = () => {
     <div className="min-h-screen bg-social-light">
       <div className="container max-w-4xl py-8">
         <ProfileHeader 
-          user={profileUser} 
+          user={user} 
           isOwnProfile={true}
           onEditProfile={handleEditProfile}
         />
+
+        <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+          <DialogContent className="sm:max-w-[500px]">
+            <DialogHeader>
+              <DialogTitle>Edit Profile</DialogTitle>
+            </DialogHeader>
+            <ProfileEditForm
+              user={user}
+              onClose={() => setIsEditDialogOpen(false)}
+              onSave={handleSaveProfile}
+            />
+          </DialogContent>
+        </Dialog>
 
         <Tabs 
           value={activeTab} 
