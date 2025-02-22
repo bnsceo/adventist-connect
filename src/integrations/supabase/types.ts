@@ -12,12 +12,14 @@ export type Database = {
       churches: {
         Row: {
           admin_user_id: string | null
+          banner_image: string | null
           contact_email: string | null
           contact_phone: string | null
           created_at: string | null
           description: string | null
           id: string
           location: string | null
+          logo_image: string | null
           mission_statement: string | null
           name: string
           service_times: Json | null
@@ -26,12 +28,14 @@ export type Database = {
         }
         Insert: {
           admin_user_id?: string | null
+          banner_image?: string | null
           contact_email?: string | null
           contact_phone?: string | null
           created_at?: string | null
           description?: string | null
           id?: string
           location?: string | null
+          logo_image?: string | null
           mission_statement?: string | null
           name: string
           service_times?: Json | null
@@ -40,12 +44,14 @@ export type Database = {
         }
         Update: {
           admin_user_id?: string | null
+          banner_image?: string | null
           contact_email?: string | null
           contact_phone?: string | null
           created_at?: string | null
           description?: string | null
           id?: string
           location?: string | null
+          logo_image?: string | null
           mission_statement?: string | null
           name?: string
           service_times?: Json | null
