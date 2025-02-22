@@ -1,4 +1,3 @@
-
 export interface User {
   id: string;
   name: string;
@@ -65,6 +64,8 @@ export interface Church {
   adminUserId: string;
   createdAt: string;
   updatedAt: string;
+  bannerImage?: string;
+  logoImage?: string;
 }
 
 export interface ServiceTime {
