@@ -11,6 +11,7 @@ import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
 import Church from "./pages/Church";
 import Auth from "./pages/Auth";
+import LearnMore from "./pages/LearnMore";
 import { useEffect, useState } from "react";
 import { supabase } from "./integrations/supabase/client";
 import { User } from "@supabase/supabase-js";
@@ -54,6 +55,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/learn-more" element={<LearnMore />} />
             <Route
               path="/feed"
               element={

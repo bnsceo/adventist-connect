@@ -1,9 +1,35 @@
 
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import { Users, Church, Calendar, Heart } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Users, Church, Calendar, Heart, BookOpen } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { User } from "@supabase/supabase-js";
 
 const Landing = () => {
+  const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, []);
+
+  const handleJoinCommunity = () => {
+    if (user) {
+      navigate("/feed");
+    } else {
+      navigate("/auth");
+    }
+  };
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -16,11 +42,19 @@ const Landing = () => {
             Join a thriving community of believers. Share your faith journey, connect with local churches, and participate in meaningful discussions.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="bg-social-primary hover:bg-social-secondary">
-              <Link to="/register">Join the Community</Link>
+            <Button 
+              size="lg" 
+              className="bg-social-primary hover:bg-social-secondary"
+              onClick={handleJoinCommunity}
+            >
+              <Users className="w-5 h-5 mr-2" />
+              {user ? "Go to Community" : "Join Community"}
             </Button>
             <Button asChild size="lg" variant="outline">
-              <Link to="/about">Learn More</Link>
+              <Link to="/learn-more">
+                <BookOpen className="w-5 h-5 mr-2" />
+                Learn More
+              </Link>
             </Button>
           </div>
         </div>
