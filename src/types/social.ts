@@ -1,3 +1,4 @@
+
 export interface User {
   id: string;
   name: string;
@@ -66,6 +67,7 @@ export interface Church {
   updatedAt: string;
   bannerImage?: string;
   logoImage?: string;
+  coordinates?: [number, number]; // Added coordinates as an optional tuple of [longitude, latitude]
 }
 
 export interface ServiceTime {
