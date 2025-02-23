@@ -1,6 +1,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import maplibregl from 'maplibre-gl';
+import 'maplibre-gl/dist/maplibre-gl.css';
 import { Church } from '@/types/social';
 
 export const useChurchMap = (churches: Church[]) => {
