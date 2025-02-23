@@ -1,13 +1,17 @@
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Search, MapPin } from "lucide-react";
 import { Church } from "@/types/social";
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 const Churches = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const mapContainer = useRef<HTMLDivElement>(null);
+  const map = useRef<mapboxgl.Map | null>(null);
+  const [mapboxToken, setMapboxToken] = useState("");
   
   // Temporary mock data - will be replaced with actual data from backend
   const churches: Church[] = [
@@ -16,6 +20,7 @@ const Churches = () => {
       name: "Central Adventist Church",
       description: "A welcoming community of believers in the heart of the city.",
       location: "123 Faith Street, Los Angeles, CA",
+      coordinates: [-118.2437, 34.0522], // Los Angeles coordinates
       serviceTimes: [
         { day: "Saturday", time: "9:30 AM", type: "Sabbath School" },
         { day: "Saturday", time: "11:00 AM", type: "Worship Service" }
@@ -23,8 +28,94 @@ const Churches = () => {
       adminUserId: "1",
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
+    },
+    {
+      id: "2",
+      name: "Mountain View Adventist Church",
+      description: "Growing together in faith and fellowship.",
+      location: "456 Hope Avenue, San Francisco, CA",
+      coordinates: [-122.4194, 37.7749], // San Francisco coordinates
+      serviceTimes: [
+        { day: "Saturday", time: "9:00 AM", type: "Sabbath School" },
+        { day: "Saturday", time: "10:30 AM", type: "Worship Service" }
+      ],
+      adminUserId: "2",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     }
   ];
+
+  useEffect(() => {
+    // Initialize map
+    if (!mapContainer.current || map.current) return;
+
+    const initializeMap = () => {
+      if (!mapboxToken) {
+        // For development, you can input your token here
+        const token = prompt("Please enter your Mapbox token for development:");
+        if (token) {
+          setMapboxToken(token);
+        }
+        return;
+      }
+
+      mapboxgl.accessToken = mapboxToken;
+      
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: 'mapbox://styles/mapbox/light-v11',
+        center: [-98.5795, 39.8283], // Center of USA
+        zoom: 3
+      });
+
+      // Add navigation controls
+      map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+      // Add markers for each church
+      churches.forEach((church) => {
+        if (church.coordinates) {
+          const marker = new mapboxgl.Marker()
+            .setLngLat(church.coordinates)
+            .setPopup(
+              new mapboxgl.Popup({ offset: 25 })
+                .setHTML(
+                  `<h3 class="font-semibold">${church.name}</h3>
+                   <p class="text-sm">${church.location}</p>
+                   <p class="text-sm mt-2">Services:<br/>
+                   ${church.serviceTimes.map(service => 
+                     `${service.type}: ${service.day} at ${service.time}`
+                   ).join('<br/>')}</p>`
+                )
+            )
+            .addTo(map.current);
+        }
+      });
+    };
+
+    initializeMap();
+
+    return () => {
+      if (map.current) {
+        map.current.remove();
+        map.current = null;
+      }
+    };
+  }, [mapboxToken]);
+
+  const handleChurchClick = (church: Church) => {
+    if (map.current && church.coordinates) {
+      map.current.flyTo({
+        center: church.coordinates,
+        zoom: 14,
+        essential: true
+      });
+    }
+  };
+
+  const filteredChurches = churches.filter(church =>
+    church.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    church.location.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
@@ -45,8 +136,12 @@ const Churches = () => {
               </div>
               
               <div className="space-y-4">
-                {churches.map((church) => (
-                  <Card key={church.id} className="p-4 hover:bg-gray-50 cursor-pointer">
+                {filteredChurches.map((church) => (
+                  <Card 
+                    key={church.id} 
+                    className="p-4 hover:bg-gray-50 cursor-pointer transition-colors"
+                    onClick={() => handleChurchClick(church)}
+                  >
                     <h3 className="font-semibold text-lg mb-2">{church.name}</h3>
                     <div className="flex items-start gap-2 text-gray-600 mb-2">
                       <MapPin className="w-4 h-4 mt-1 shrink-0" />
@@ -68,9 +163,7 @@ const Churches = () => {
           {/* Map Section */}
           <div className="w-full md:w-2/3">
             <Card className="h-[600px] p-4">
-              <div className="h-full bg-gray-100 rounded flex items-center justify-center">
-                <p className="text-gray-500">Google Maps integration coming soon...</p>
-              </div>
+              <div ref={mapContainer} className="h-full rounded-lg" />
             </Card>
           </div>
         </div>
