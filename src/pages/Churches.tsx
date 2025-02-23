@@ -4,14 +4,16 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Search, MapPin } from "lucide-react";
 import { Church } from "@/types/social";
-import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
+import maplibregl from 'maplibre-gl';
+import 'maplibre-gl/dist/maplibre-gl.css';
+
+<lov-add-dependency>maplibre-gl@latest</lov-add-dependency>
 
 const Churches = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
-  const [mapboxToken, setMapboxToken] = useState("");
+  const map = useRef<maplibregl.Map | null>(null);
+  const [mapKey, setMapKey] = useState("");
   
   // Temporary mock data - will be replaced with actual data from backend
   const churches: Church[] = [
@@ -50,34 +52,36 @@ const Churches = () => {
     if (!mapContainer.current || map.current) return;
 
     const initializeMap = () => {
-      if (!mapboxToken) {
+      if (!mapKey) {
         // For development, you can input your token here
-        const token = prompt("Please enter your Mapbox token for development:");
+        const token = prompt("Please enter your MapTiler API key for development:");
         if (token) {
-          setMapboxToken(token);
+          setMapKey(token);
         }
         return;
       }
 
-      mapboxgl.accessToken = mapboxToken;
-      
-      map.current = new mapboxgl.Map({
+      map.current = new maplibregl.Map({
         container: mapContainer.current,
-        style: 'mapbox://styles/mapbox/light-v11',
+        style: `https://api.maptiler.com/maps/streets/style.json?key=${mapKey}`,
         center: [-98.5795, 39.8283], // Center of USA
         zoom: 3
       });
 
       // Add navigation controls
-      map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+      map.current.addControl(new maplibregl.NavigationControl(), 'top-right');
 
       // Add markers for each church
       churches.forEach((church) => {
         if (church.coordinates) {
-          const marker = new mapboxgl.Marker()
+          const markerElement = document.createElement('div');
+          markerElement.className = 'church-marker';
+          markerElement.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M18 6h.5A2.5 2.5 0 0 1 21 8.5v0A2.5 2.5 0 0 1 18.5 11h-13A2.5 2.5 0 0 1 3 8.5v0A2.5 2.5 0 0 1 5.5 6H6"/><path d="M18 6V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M10 11v4"/><path d="M14 11v4"/><path d="M12 11v4"/><path d="M6 11h12v8a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-8Z"/></svg>`;
+
+          const marker = new maplibregl.Marker({element: markerElement})
             .setLngLat(church.coordinates)
             .setPopup(
-              new mapboxgl.Popup({ offset: 25 })
+              new maplibregl.Popup({ offset: 25 })
                 .setHTML(
                   `<h3 class="font-semibold">${church.name}</h3>
                    <p class="text-sm">${church.location}</p>
@@ -90,6 +94,29 @@ const Churches = () => {
             .addTo(map.current);
         }
       });
+
+      // Add event listener for when the map style is loaded
+      map.current.on('style.load', () => {
+        if (map.current) {
+          map.current.addSource('churches', {
+            type: 'geojson',
+            data: {
+              type: 'FeatureCollection',
+              features: churches.map(church => ({
+                type: 'Feature',
+                geometry: {
+                  type: 'Point',
+                  coordinates: church.coordinates || [0, 0]
+                },
+                properties: {
+                  name: church.name,
+                  location: church.location
+                }
+              }))
+            }
+          });
+        }
+      });
     };
 
     initializeMap();
@@ -100,7 +127,7 @@ const Churches = () => {
         map.current = null;
       }
     };
-  }, [mapboxToken]);
+  }, [mapKey]);
 
   const handleChurchClick = (church: Church) => {
     if (map.current && church.coordinates) {
