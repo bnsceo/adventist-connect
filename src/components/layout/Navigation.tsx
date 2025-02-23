@@ -100,89 +100,86 @@ export const Navigation = () => {
             </Link>
             
             {user ? (
-              <>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="icon">
-                      <Settings className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56" align="end">
-                    <DropdownMenuLabel>Account Settings</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="icon">
+                    <Settings className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end">
+                  <DropdownMenuLabel>Account Settings</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem asChild>
+                      <Link to="/profile" className="flex items-center">
                         <User className="mr-2 h-4 w-4" />
                         <span>Profile Management</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Key className="mr-2 h-4 w-4" />
-                        <span>Login & Security</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <LinkIcon className="mr-2 h-4 w-4" />
-                        <span>Connected Accounts</span>
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                    
-                    <DropdownMenuSeparator />
-                    <DropdownMenuLabel>Privacy & Content</DropdownMenuLabel>
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem>
-                        <Shield className="mr-2 h-4 w-4" />
-                        <span>Privacy Settings</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Bell className="mr-2 h-4 w-4" />
-                        <span>Notifications</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Layout className="mr-2 h-4 w-4" />
-                        <span>Feed Preferences</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <MessageSquare className="mr-2 h-4 w-4" />
-                        <span>Messaging Settings</span>
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                    
-                    <DropdownMenuSeparator />
-                    <DropdownMenuLabel>System</DropdownMenuLabel>
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem>
-                        <Lock className="mr-2 h-4 w-4" />
-                        <span>Security</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Palette className="mr-2 h-4 w-4" />
-                        <span>Display & Accessibility</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Database className="mr-2 h-4 w-4" />
-                        <span>Data & Storage</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <BadgePercent className="mr-2 h-4 w-4" />
-                        <span>Ad Preferences</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <AlertTriangle className="mr-2 h-4 w-4" />
-                        <span>Content Moderation</span>
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                
-                <Button
-                  onClick={handleSignOut}
-                  variant="default"
-                  className="bg-social-primary hover:bg-social-secondary"
-                >
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Sign Out
-                </Button>
-              </>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Key className="mr-2 h-4 w-4" />
+                      <span>Login & Security</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <LinkIcon className="mr-2 h-4 w-4" />
+                      <span>Connected Accounts</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  
+                  <DropdownMenuSeparator />
+                  <DropdownMenuLabel>Privacy & Content</DropdownMenuLabel>
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem>
+                      <Shield className="mr-2 h-4 w-4" />
+                      <span>Privacy Settings</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Bell className="mr-2 h-4 w-4" />
+                      <span>Notifications</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Layout className="mr-2 h-4 w-4" />
+                      <span>Feed Preferences</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <MessageSquare className="mr-2 h-4 w-4" />
+                      <span>Messaging Settings</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  
+                  <DropdownMenuSeparator />
+                  <DropdownMenuLabel>System</DropdownMenuLabel>
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem>
+                      <Lock className="mr-2 h-4 w-4" />
+                      <span>Security</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Palette className="mr-2 h-4 w-4" />
+                      <span>Display & Accessibility</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Database className="mr-2 h-4 w-4" />
+                      <span>Data & Storage</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <BadgePercent className="mr-2 h-4 w-4" />
+                      <span>Ad Preferences</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <AlertTriangle className="mr-2 h-4 w-4" />
+                      <span>Content Moderation</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut} className="text-red-600">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Sign Out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
               <Button
                 asChild
@@ -234,10 +231,11 @@ export const Navigation = () => {
                 {user && (
                   <>
                     <DropdownMenuSeparator />
-                    <DropdownMenuLabel>Account Settings</DropdownMenuLabel>
-                    <DropdownMenuItem>
-                      <User className="mr-2 h-4 w-4" />
-                      <span>Profile Management</span>
+                    <DropdownMenuItem asChild>
+                      <Link to="/profile" className="flex items-center gap-2">
+                        <User className="w-4 h-4" />
+                        Profile Management
+                      </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                       <Shield className="mr-2 h-4 w-4" />
@@ -248,18 +246,14 @@ export const Navigation = () => {
                       <span>Notifications</span>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleSignOut} className="text-red-600">
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Sign Out
+                    </DropdownMenuItem>
                   </>
                 )}
                 
-                {user ? (
-                  <DropdownMenuItem
-                    onClick={handleSignOut}
-                    className="flex items-center gap-2"
-                  >
-                    <LogOut className="w-4 h-4" />
-                    Sign Out
-                  </DropdownMenuItem>
-                ) : (
+                {!user && (
                   <DropdownMenuItem asChild>
                     <Link to="/auth" className="flex items-center gap-2">
                       <LogIn className="w-4 h-4" />
