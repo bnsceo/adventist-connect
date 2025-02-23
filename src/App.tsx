@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
 import Church from "./pages/Church";
+import Churches from "./pages/Churches";
 import Auth from "./pages/Auth";
 import LearnMore from "./pages/LearnMore";
 import { useEffect, useState } from "react";
@@ -56,6 +57,7 @@ const App = () => (
             <Route path="/" element={<Landing />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/learn-more" element={<LearnMore />} />
+            <Route path="/churches" element={<Churches />} />
             <Route
               path="/feed"
               element={
