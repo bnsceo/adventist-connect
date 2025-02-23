@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Church } from "@/types/social";
 import { ChurchCard } from "@/components/churches/ChurchCard";
 import { SearchBar } from "@/components/churches/SearchBar";
 import { useChurchMap } from "@/hooks/useChurchMap";
-import { Clock, Globe, MapPin, Users } from "lucide-react";
+import { Clock, MapPin, Phone, Users } from "lucide-react";
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 const Churches = () => {
@@ -14,26 +13,43 @@ const Churches = () => {
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [viewMode, setViewMode] = useState("list");
 
-  // Your existing churches data array here
-  const churches: Church[] = [/* ... existing churches data ... */];
+  const churches: Church[] = [
+    {
+      id: "1",
+      name: "Bethel French SDA Church",
+      description: "A welcoming Seventh-day Adventist church in Orlando.",
+      location: "5431 S Rio Grande Ave, Orlando, FL",
+      phone: "(407) 812-9334",
+      coordinates: [-81.34, 28.54],
+      serviceTimes: [
+        { day: "Saturday", time: "9:30 AM", type: "Sabbath School" },
+        { day: "Saturday", time: "11:00 AM", type: "Worship Service" }
+      ],
+      category: "international"
+    },
+    {
+      id: "2",
+      name: "MT Sinai Seventh Day Adventist Church",
+      description: "A community focused on spreading the love of Christ.",
+      location: "2610 Orange Center Blvd, Orlando, FL",
+      phone: "(407) 298-7877",
+      coordinates: [-81.39, 28.54],
+      serviceTimes: [
+        { day: "Saturday", time: "9:00 AM", type: "Sabbath School" },
+        { day: "Saturday", time: "10:30 AM", type: "Worship Service" }
+      ],
+      category: "english"
+    },
+    // ... Add all other churches following the same pattern
+  ];
 
   const { mapContainer, flyToChurch } = useChurchMap(churches);
 
   // Categorize churches
   const categories = {
     all: churches,
-    english: churches.filter(church => 
-      !church.name.toLowerCase().includes("spanish") &&
-      !church.name.toLowerCase().includes("vietnamese") &&
-      !church.name.toLowerCase().includes("french") &&
-      !church.name.toLowerCase().includes("brazilian") &&
-      !church.name.toLowerCase().includes("filipino")),
-    international: churches.filter(church =>
-      church.name.toLowerCase().includes("spanish") ||
-      church.name.toLowerCase().includes("vietnamese") ||
-      church.name.toLowerCase().includes("french") ||
-      church.name.toLowerCase().includes("brazilian") ||
-      church.name.toLowerCase().includes("filipino"))
+    english: churches.filter(church => church.category === "english"),
+    international: churches.filter(church => church.category === "international")
   };
 
   const filteredChurches = categories[selectedFilter].filter(church =>
@@ -59,10 +75,10 @@ const Churches = () => {
       <div className="container max-w-7xl mx-auto px-4">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Find Your Church Home
+            Orlando SDA Church Directory
           </h1>
           <p className="text-gray-600">
-            Discover Seventh-day Adventist churches in Orlando, FL
+            Find Seventh-day Adventist churches in the greater Orlando area
           </p>
         </div>
 
@@ -73,7 +89,7 @@ const Churches = () => {
               <SearchBar 
                 value={searchQuery}
                 onChange={setSearchQuery}
-                placeholder="Search by name or location..."
+                placeholder="Search by name, location, or phone..."
               />
               
               <div className="mt-4 space-x-2">
@@ -127,7 +143,7 @@ const Churches = () => {
                 {filteredChurches.map((church) => (
                   <div
                     key={church.id}
-                    className="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                    className="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer"
                     onClick={() => flyToChurch(church)}
                   >
                     <h3 className="font-semibold text-lg mb-2">{church.name}</h3>
@@ -137,6 +153,11 @@ const Churches = () => {
                       <div className="flex items-center gap-2">
                         <MapPin className="w-4 h-4 text-gray-500" />
                         <span>{church.location}</span>
+                      </div>
+                      
+                      <div className="flex items-center gap-2">
+                        <Phone className="w-4 h-4 text-gray-500" />
+                        <span>{church.phone}</span>
                       </div>
                       
                       <div className="flex items-center gap-2">
