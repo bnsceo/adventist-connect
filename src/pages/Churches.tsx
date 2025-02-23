@@ -1,17 +1,40 @@
-import React, { useState } from "react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Church } from "@/types/social";
-import { ChurchCard } from "@/components/churches/ChurchCard";
-import { SearchBar } from "@/components/churches/SearchBar";
-import { useChurchMap } from "@/hooks/useChurchMap";
-import { Clock, MapPin, Phone, Users } from "lucide-react";
-import 'maplibre-gl/dist/maplibre-gl.css';
+
+
+import React, { useState } from 'react';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Separator } from '@/components/ui/separator';
+import { MapPin, Phone, Clock, Users } from 'lucide-react';
+
+
+
+
+interface ServiceTime {
+  day: string;
+  time: string;
+  type: string;
+}
+
+interface Church {
+  id: string;
+  name: string;
+  description?: string;
+  location: string;
+  phone: string;
+  coordinates: [number, number];
+  serviceTimes: ServiceTime[];
+  category: 'english' | 'international';
+}
+
+
+
 
 const Churches = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedFilter, setSelectedFilter] = useState("all");
-  const [viewMode, setViewMode] = useState("list");
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedFilter, setSelectedFilter] = useState<'all' | 'english' | 'international'>('all');
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
 
   const churches: Church[] = [
     {
@@ -40,12 +63,12 @@ const Churches = () => {
       ],
       category: "english"
     },
-    // ... Add all other churches following the same pattern
+    // Additional churches...
   ];
 
-  const { mapContainer, flyToChurch } = useChurchMap(churches);
 
-  // Categorize churches
+
+
   const categories = {
     all: churches,
     english: churches.filter(church => church.category === "english"),
@@ -57,133 +80,117 @@ const Churches = () => {
     church.location.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const QuickFilter = ({ label, count, isActive, onClick }) => (
-    <Button
-      variant={isActive ? "default" : "outline"}
-      className="flex items-center gap-2"
-      onClick={onClick}
-    >
-      {label}
-      <span className="bg-primary-foreground text-primary px-2 py-0.5 rounded-full text-sm">
-        {count}
-      </span>
-    </Button>
-  );
+
+
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="container max-w-7xl mx-auto px-4">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Orlando SDA Church Directory
-          </h1>
-          <p className="text-gray-600">
-            Find Seventh-day Adventist churches in the greater Orlando area
-          </p>
-        </div>
+        <header className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Orlando SDA Church Directory</h1>
+          <p className="text-gray-600">Find Seventh-day Adventist churches in the greater Orlando area</p>
+        </header>
 
-        <div className="flex flex-col md:flex-row gap-6">
-          <div className="w-full md:w-1/3 space-y-4">
-            {/* Search and Filters */}
-            <Card className="p-4">
-              <SearchBar 
-                value={searchQuery}
-                onChange={setSearchQuery}
-                placeholder="Search by name, location, or phone..."
-              />
-              
-              <div className="mt-4 space-x-2">
-                <QuickFilter 
-                  label="All Churches"
-                  count={categories.all.length}
-                  isActive={selectedFilter === "all"}
-                  onClick={() => setSelectedFilter("all")}
+        <main className="grid md:grid-cols-12 gap-6">
+          <aside className="md:col-span-3 space-y-4">
+            <Card>
+              <CardContent className="pt-6">
+                <Input
+                  type="text"
+                  placeholder="Search churches..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="mb-4"
                 />
-                <QuickFilter 
-                  label="English"
-                  count={categories.english.length}
-                  isActive={selectedFilter === "english"}
-                  onClick={() => setSelectedFilter("english")}
-                />
-                <QuickFilter 
-                  label="International"
-                  count={categories.international.length}
-                  isActive={selectedFilter === "international"}
-                  onClick={() => setSelectedFilter("international")}
-                />
-              </div>
-            </Card>
-
-            {/* Church List */}
-            <Card className="p-4">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg font-semibold">
-                  {filteredChurches.length} Churches Found
-                </h2>
-                <div className="flex gap-2">
+                
+                <div className="space-y-2">
                   <Button
-                    variant={viewMode === "list" ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setViewMode("list")}
+                    variant={selectedFilter === "all" ? "default" : "outline"}
+                    className="w-full"
+                    onClick={() => setSelectedFilter("all")}
                   >
-                    List
+                    All Churches ({categories.all.length})
                   </Button>
+                  
                   <Button
-                    variant={viewMode === "map" ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setViewMode("map")}
-                    className="md:hidden"
+                    variant={selectedFilter === "english" ? "default" : "outline"}
+                    className="w-full"
+                    onClick={() => setSelectedFilter("english")}
                   >
-                    Map
+                    English ({categories.english.length})
+                  </Button>
+                  
+                  <Button
+                    variant={selectedFilter === "international" ? "default" : "outline"}
+                    className="w-full"
+                    onClick={() => setSelectedFilter("international")}
+                  >
+                    International ({categories.international.length})
                   </Button>
                 </div>
-              </div>
 
-              <div className="space-y-4 max-h-[600px] overflow-y-auto">
-                {filteredChurches.map((church) => (
-                  <div
-                    key={church.id}
-                    className="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer"
-                    onClick={() => flyToChurch(church)}
-                  >
-                    <h3 className="font-semibold text-lg mb-2">{church.name}</h3>
-                    <p className="text-gray-600 text-sm mb-3">{church.description}</p>
-                    
-                    <div className="space-y-2 text-sm">
-                      <div className="flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-gray-500" />
-                        <span>{church.location}</span>
+                <Separator className="my-4" />
+
+                <Tabs defaultValue="list" className="w-full">
+                  <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="list">List View</TabsTrigger>
+                    <TabsTrigger value="map">Map View</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="list" className="mt-4">
+                    <p className="text-sm text-gray-600">{filteredChurches.length} churches found</p>
+                  </TabsContent>
+                </Tabs>
+              </CardContent>
+            </Card>
+          </aside>
+
+          <section className="md:col-span-9 space-y-4">
+            <div className="grid gap-4">
+              {filteredChurches.map((church) => (
+                <Card key={church.id} className="overflow-hidden">
+                  <CardContent className="pt-6">
+                    <header className="flex flex-col gap-2 mb-4">
+                      <h3 className="text-xl font-semibold text-gray-900">{church.name}</h3>
+                      {church.description && (
+                        <p className="text-gray-600 text-sm">{church.description}</p>
+                      )}
+                    </header>
+
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-gray-600">
+                          <MapPin className="w-4 h-4" />
+                          <span className="font-medium">{church.location}</span>
+                        </div>
+                        
+                        <div className="flex items-center gap-2 text-gray-600">
+                          <Phone className="w-4 h-4" />
+                          <span className="font-medium">{church.phone}</span>
+                        </div>
                       </div>
-                      
-                      <div className="flex items-center gap-2">
-                        <Phone className="w-4 h-4 text-gray-500" />
-                        <span>{church.phone}</span>
-                      </div>
-                      
-                      <div className="flex items-center gap-2">
-                        <Clock className="w-4 h-4 text-gray-500" />
-                        <div>
+
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-gray-600">
+                          <Clock className="w-4 h-4" />
+                          <span className="font-medium">Service Times:</span>
+                        </div>
+                        
+                        <div className="space-y-1">
                           {church.serviceTimes.map((service, index) => (
-                            <div key={index}>
-                              {service.type}: {service.time}
+                            <div key={index} className="flex items-center gap-2 text-gray-600">
+                              <Users className="w-4 h-4" />
+                              <span>{service.day} - {service.time} ({service.type})</span>
                             </div>
                           ))}
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </Card>
-          </div>
-
-          {/* Map Section */}
-          <div className={`w-full md:w-2/3 ${viewMode === "map" ? "" : "hidden md:block"}`}>
-            <Card className="h-[700px] p-4">
-              <div ref={mapContainer} className="h-full rounded-lg" />
-            </Card>
-          </div>
-        </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </section>
+        </main>
       </div>
     </div>
   );
