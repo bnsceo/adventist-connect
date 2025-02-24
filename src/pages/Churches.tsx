@@ -1,199 +1,88 @@
 
-
-import React, { useState } from "react";
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Church } from "@/types/social";
 import { ChurchCard } from "@/components/churches/ChurchCard";
 import { SearchBar } from "@/components/churches/SearchBar";
 import { useChurchMap } from "@/hooks/useChurchMap";
-import { Clock, MapPin, Phone, Users } from "lucide-react";
 import 'maplibre-gl/dist/maplibre-gl.css';
 
-
-
-
-interface ChurchesProps {
-  initialChurches?: Church[];
-}
-
-const defaultChurches: Church[] = [
-  {
-    id: "1",
-    name: "Bethel French SDA Church",
-    description: "A welcoming French-speaking congregation",
-    location: "5431 S Rio Grande Ave, Orlando, FL",
-    phone: "(407) 812-9334",
-    coordinates: [-81.34, 28.54],
-    serviceTimes: [
-      { day: "Saturday", time: "9:30 AM", type: "Sabbath School" },
-      { day: "Saturday", time: "11:00 AM", type: "Worship Service" }
-    ],
-    category: "international"
-  },
-  {
-    id: "2",
-    name: "MT Sinai Seventh Day Adventist Church",
-    description: "Community-focused ministry",
-    location: "2610 Orange Center Blvd, Orlando, FL",
-    phone: "(407) 298-7877",
-    coordinates: [-81.39, 28.54],
-    serviceTimes: [
-      { day: "Saturday", time: "9:00 AM", type: "Sabbath School" },
-      { day: "Saturday", time: "10:30 AM", type: "Worship Service" }
-    ],
-    category: "english"
-  }
-];
-
-
-
-
-const Churches: React.FC<ChurchesProps> = ({ initialChurches = defaultChurches }) => {
+const Churches = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedFilter, setSelectedFilter] = useState("all");
-  const [viewMode, setViewMode] = useState("list");
-
-  const { mapContainer, flyToChurch } = useChurchMap(initialChurches);
-
   
+  // Temporary mock data - will be replaced with actual data from backend
+  const churches: Church[] = [
+    {
+      id: "1",
+      name: "Central Adventist Church",
+      description: "A welcoming community of believers in the heart of the city.",
+      location: "123 Faith Street, Los Angeles, CA",
+      missionStatement: "To share God's love and message of hope.",
+      contactEmail: "info@central.church",
+      contactPhone: "(555) 123-4567",
+      websiteUrl: "https://central.church",
+      serviceTimes: [
+        { day: "Saturday", time: "9:30 AM", type: "Sabbath School" },
+        { day: "Saturday", time: "11:00 AM", type: "Worship Service" }
+      ],
+      adminUserId: "1",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      coordinates: [-118.2437, 34.0522]
+    },
+    {
+      id: "2",
+      name: "Mountain View Adventist Church",
+      description: "Growing together in faith and fellowship.",
+      location: "456 Hope Avenue, San Francisco, CA",
+      missionStatement: "Building a Christ-centered community.",
+      contactEmail: "hello@mountainview.church",
+      contactPhone: "(555) 987-6543",
+      websiteUrl: "https://mountainview.church",
+      serviceTimes: [
+        { day: "Saturday", time: "9:00 AM", type: "Sabbath School" },
+        { day: "Saturday", time: "10:30 AM", type: "Worship Service" }
+      ],
+      adminUserId: "2",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      coordinates: [-122.4194, 37.7749]
+    }
+  ];
 
+  const { mapContainer, flyToChurch } = useChurchMap(churches);
 
-  const categories = {
-    all: initialChurches,
-    english: initialChurches.filter(church => church.category === "english"),
-    international: initialChurches.filter(church => church.category === "international")
-  };
-
-  const filteredChurches = categories[selectedFilter].filter(church =>
+  const filteredChurches = churches.filter(church =>
     church.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    church.location.toLowerCase().includes(searchQuery.toLowerCase())
+    (church.location?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false)
   );
 
-  
-
-
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-12">
       <div className="container max-w-7xl mx-auto px-4">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Orlando SDA Church Directory
-          </h1>
-          <p className="text-gray-600">
-            Find Seventh-day Adventist churches in the greater Orlando area
-          </p>
-        </div>
-
-        <div className="flex flex-col md:flex-row gap-6">
-          <div className="w-full md:w-1/3 space-y-4">
+        <div className="flex flex-col md:flex-row gap-8">
+          {/* Search and List Section */}
+          <div className="w-full md:w-1/3">
             <Card className="p-4">
               <SearchBar 
                 value={searchQuery}
                 onChange={setSearchQuery}
-                placeholder="Search by name, location, or phone..."
               />
-              
-              <div className="mt-4 space-x-2">
-                <Button
-                  variant={selectedFilter === "all" ? "default" : "outline"}
-                  onClick={() => setSelectedFilter("all")}
-                  className="flex items-center gap-2"
-                >
-                  All Churches
-                  <span className="bg-primary-foreground text-primary px-2 py-0.5 rounded-full text-sm">
-                    {categories.all.length}
-                  </span>
-                </Button>
-                
-                <Button
-                  variant={selectedFilter === "english" ? "default" : "outline"}
-                  onClick={() => setSelectedFilter("english")}
-                  className="flex items-center gap-2"
-                >
-                  English
-                  <span className="bg-primary-foreground text-primary px-2 py-0.5 rounded-full text-sm">
-                    {categories.english.length}
-                  </span>
-                </Button>
-                
-                <Button
-                  variant={selectedFilter === "international" ? "default" : "outline"}
-                  onClick={() => setSelectedFilter("international")}
-                  className="flex items-center gap-2"
-                >
-                  International
-                  <span className="bg-primary-foreground text-primary px-2 py-0.5 rounded-full text-sm">
-                    {categories.international.length}
-                  </span>
-                </Button>
-              </div>
-            </Card>
-
-            <Card className="p-4">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg font-semibold">
-                  {filteredChurches.length} Churches Found
-                </h2>
-                <div className="flex gap-2">
-                  <Button
-                    variant={viewMode === "list" ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setViewMode("list")}
-                  >
-                    List
-                  </Button>
-                  <Button
-                    variant={viewMode === "map" ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setViewMode("map")}
-                    className="md:hidden"
-                  >
-                    Map
-                  </Button>
-                </div>
-              </div>
-
-              <div className="space-y-4 max-h-[600px] overflow-y-auto">
+              <div className="space-y-4 mt-4">
                 {filteredChurches.map((church) => (
-                  <div
+                  <ChurchCard 
                     key={church.id}
-                    className="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer"
-                    onClick={() => flyToChurch(church)}
-                  >
-                    <h3 className="font-semibold text-lg mb-2">{church.name}</h3>
-                    <p className="text-gray-600 text-sm mb-3">{church.description}</p>
-                    
-                    <div className="space-y-2 text-sm">
-                      <div className="flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-gray-500" />
-                        <span>{church.location}</span>
-                      </div>
-                      
-                      <div className="flex items-center gap-2">
-                        <Phone className="w-4 h-4 text-gray-500" />
-                        <span>{church.phone}</span>
-                      </div>
-                      
-                      <div className="flex items-center gap-2">
-                        <Clock className="w-4 h-4 text-gray-500" />
-                        <div>
-                          {church.serviceTimes.map((service, index) => (
-                            <div key={index} className="text-sm">
-                              {service.type}: {service.time}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                    church={church}
+                    onClick={flyToChurch}
+                  />
                 ))}
               </div>
             </Card>
           </div>
 
-          <div className={`w-full md:w-2/3 ${viewMode === "map" ? "" : "hidden md:block"}`}>
-            <Card className="h-[700px] p-4">
+          {/* Map Section */}
+          <div className="w-full md:w-2/3">
+            <Card className="h-[600px] p-4">
               <div ref={mapContainer} className="h-full rounded-lg" />
             </Card>
           </div>
