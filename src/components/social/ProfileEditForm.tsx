@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { User } from "@/types/social";
+import { supabase } from "@/integrations/supabase/client";
 
 interface ProfileEditFormProps {
   user: User;
@@ -21,27 +22,57 @@ export const ProfileEditForm = ({ user, onClose, onSave }: ProfileEditFormProps)
     bio: user.bio || "",
     location: user.location || "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
+
     try {
-      // Here we'll integrate with backend later
+      const { data: session } = await supabase.auth.getSession();
+      if (!session?.session?.user) {
+        throw new Error("No authenticated user found");
+      }
+
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          full_name: formData.name,
+          church_role: formData.role,
+          church_name: formData.church,
+          bio: formData.bio,
+          location: formData.location,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', session.session.user.id);
+
+      if (error) {
+        throw error;
+      }
+
+      // Update local state with new values
       const updatedUser = {
         ...user,
-        ...formData,
+        ...formData
       };
+
       onSave(updatedUser);
+      
       toast({
         title: "Success",
         description: "Profile updated successfully",
       });
+      
       onClose();
     } catch (error) {
+      console.error('Error updating profile:', error);
       toast({
         title: "Error",
-        description: "Failed to update profile",
+        description: "Failed to update profile. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -56,6 +87,7 @@ export const ProfileEditForm = ({ user, onClose, onSave }: ProfileEditFormProps)
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           required
+          disabled={isLoading}
         />
       </div>
 
@@ -68,6 +100,7 @@ export const ProfileEditForm = ({ user, onClose, onSave }: ProfileEditFormProps)
           value={formData.role}
           onChange={(e) => setFormData({ ...formData, role: e.target.value })}
           required
+          disabled={isLoading}
         />
       </div>
 
@@ -80,6 +113,7 @@ export const ProfileEditForm = ({ user, onClose, onSave }: ProfileEditFormProps)
           value={formData.church}
           onChange={(e) => setFormData({ ...formData, church: e.target.value })}
           required
+          disabled={isLoading}
         />
       </div>
 
@@ -92,6 +126,7 @@ export const ProfileEditForm = ({ user, onClose, onSave }: ProfileEditFormProps)
           value={formData.location}
           onChange={(e) => setFormData({ ...formData, location: e.target.value })}
           placeholder="City, Country"
+          disabled={isLoading}
         />
       </div>
 
@@ -105,14 +140,17 @@ export const ProfileEditForm = ({ user, onClose, onSave }: ProfileEditFormProps)
           onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
           placeholder="Tell us about yourself..."
           rows={4}
+          disabled={isLoading}
         />
       </div>
 
       <div className="flex justify-end gap-4 pt-4">
-        <Button type="button" variant="outline" onClick={onClose}>
+        <Button type="button" variant="outline" onClick={onClose} disabled={isLoading}>
           Cancel
         </Button>
-        <Button type="submit">Save Changes</Button>
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? "Saving..." : "Save Changes"}
+        </Button>
       </div>
     </form>
   );
