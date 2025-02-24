@@ -1,11 +1,12 @@
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { User } from "@/types/social";
 import { supabase } from "@/integrations/supabase/client";
+import { Camera } from "lucide-react";
 
 interface ProfileEditFormProps {
   user: User;
@@ -23,6 +24,74 @@ export const ProfileEditForm = ({ user, onClose, onSave }: ProfileEditFormProps)
     location: user.location || "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [uploadingBanner, setUploadingBanner] = useState(false);
+  
+  const avatarInputRef = useRef<HTMLInputElement>(null);
+  const bannerInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageUpload = async (file: File, type: 'avatar' | 'banner') => {
+    try {
+      const { data: session } = await supabase.auth.getSession();
+      if (!session?.session?.user) {
+        throw new Error("No authenticated user found");
+      }
+
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${session.session.user.id}/${type}_${Math.random()}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      if (type === 'avatar') {
+        setUploadingAvatar(true);
+      } else {
+        setUploadingBanner(true);
+      }
+
+      const { error: uploadError } = await supabase.storage
+        .from('profile_images')
+        .upload(filePath, file);
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('profile_images')
+        .getPublicUrl(filePath);
+
+      const updateData = type === 'avatar' 
+        ? { avatar_url: publicUrl }
+        : { banner_image: publicUrl };
+
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update(updateData)
+        .eq('id', session.session.user.id);
+
+      if (updateError) {
+        throw updateError;
+      }
+
+      toast({
+        title: "Success",
+        description: `${type === 'avatar' ? 'Profile' : 'Banner'} image updated successfully`,
+      });
+
+    } catch (error) {
+      console.error(`Error uploading ${type} image:`, error);
+      toast({
+        title: "Error",
+        description: `Failed to upload ${type} image. Please try again.`,
+        variant: "destructive",
+      });
+    } finally {
+      if (type === 'avatar') {
+        setUploadingAvatar(false);
+      } else {
+        setUploadingBanner(false);
+      }
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,7 +119,6 @@ export const ProfileEditForm = ({ user, onClose, onSave }: ProfileEditFormProps)
         throw error;
       }
 
-      // Update local state with new values
       const updatedUser = {
         ...user,
         ...formData
@@ -78,6 +146,53 @@ export const ProfileEditForm = ({ user, onClose, onSave }: ProfileEditFormProps)
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {/* Image upload buttons */}
+      <div className="flex gap-4 mb-6">
+        <div>
+          <input
+            type="file"
+            ref={avatarInputRef}
+            className="hidden"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) handleImageUpload(file, 'avatar');
+            }}
+          />
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => avatarInputRef.current?.click()}
+            disabled={uploadingAvatar}
+          >
+            <Camera className="w-4 h-4 mr-2" />
+            {uploadingAvatar ? "Uploading..." : "Change Profile Picture"}
+          </Button>
+        </div>
+
+        <div>
+          <input
+            type="file"
+            ref={bannerInputRef}
+            className="hidden"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) handleImageUpload(file, 'banner');
+            }}
+          />
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => bannerInputRef.current?.click()}
+            disabled={uploadingBanner}
+          >
+            <Camera className="w-4 h-4 mr-2" />
+            {uploadingBanner ? "Uploading..." : "Change Banner Image"}
+          </Button>
+        </div>
+      </div>
+
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
           Name
