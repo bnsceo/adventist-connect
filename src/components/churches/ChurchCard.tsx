@@ -2,17 +2,19 @@
 import { Card } from "@/components/ui/card";
 import { MapPin } from "lucide-react";
 import { Church } from "@/types/social";
+import { useNavigate } from "react-router-dom";
 
 interface ChurchCardProps {
   church: Church;
-  onClick: (church: Church) => void;
 }
 
-export const ChurchCard = ({ church, onClick }: ChurchCardProps) => {
+export const ChurchCard = ({ church }: ChurchCardProps) => {
+  const navigate = useNavigate();
+
   return (
     <Card 
       className="p-4 hover:bg-gray-50 cursor-pointer transition-colors"
-      onClick={() => onClick(church)}
+      onClick={() => navigate(`/church/${church.id}`)}
     >
       <h3 className="font-semibold text-lg mb-2">{church.name}</h3>
       <div className="flex items-start gap-2 text-gray-600 mb-2">

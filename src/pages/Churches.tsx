@@ -1,28 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Clock, MapPin, Phone, Search } from "lucide-react";
-import maplibregl from 'maplibre-gl';
-import 'maplibre-gl/dist/maplibre-gl.css';
-
-// Define Church type directly in the component
-type ServiceTime = {
-  day: string;
-  time: string;
-  type: string;
-};
-
-type Church = {
-  id: string;
-  name: string;
-  description: string;
-  location: string;
-  phone: string;
-  coordinates: [number, number];
-  serviceTimes: ServiceTime[];
-  category: string;
-};
+import { Button } from "@/components/ui/button";
+import { ChurchCard } from "@/components/churches/ChurchCard";
+import { Church } from "@/types/social";
 
 // SearchBar component implementation
 const SearchBar = ({ value, onChange, placeholder }) => {
@@ -40,89 +22,9 @@ const SearchBar = ({ value, onChange, placeholder }) => {
   );
 };
 
-// Custom hook implementation
-const useChurchMap = (churches) => {
-  const mapContainer = useRef(null);
-  const map = useRef(null);
-  const markers = useRef([]);
-
-  useEffect(() => {
-    if (map.current) return; // Initialize map only once
-    if (!mapContainer.current) return;
-
-    map.current = new maplibregl.Map({
-      container: mapContainer.current,
-      style: 'https://demotiles.maplibre.org/style.json',
-      center: [-81.38, 28.54], // Orlando, FL
-      zoom: 11
-    });
-
-    // Add navigation control
-    map.current.addControl(new maplibregl.NavigationControl(), 'top-right');
-  }, []);
-
-  // Add markers when map is loaded and churches data is available
-  useEffect(() => {
-    if (!map.current || !churches.length) return;
-
-    // Wait for map to load
-    map.current.on('load', () => {
-      // Clear existing markers
-      markers.current.forEach(marker => marker.remove());
-      markers.current = [];
-
-      // Add markers for each church
-      churches.forEach(church => {
-        const popup = new maplibregl.Popup({ offset: 25 }).setHTML(
-          `<strong>${church.name}</strong><br>
-           ${church.location}<br>
-           ${church.phone}`
-        );
-
-        const el = document.createElement('div');
-        el.className = 'marker';
-        el.style.backgroundColor = '#3b82f6';
-        el.style.width = '24px';
-        el.style.height = '24px';
-        el.style.borderRadius = '50%';
-        el.style.cursor = 'pointer';
-        el.style.border = '2px solid white';
-
-        const marker = new maplibregl.Marker(el)
-          .setLngLat(church.coordinates)
-          .setPopup(popup)
-          .addTo(map.current);
-        
-        markers.current.push(marker);
-      });
-    });
-  }, [churches]);
-
-  const flyToChurch = (church) => {
-    if (!map.current) return;
-    
-    map.current.flyTo({
-      center: church.coordinates,
-      zoom: 14,
-      essential: true
-    });
-
-    // Find and open the popup for this church
-    markers.current.forEach(marker => {
-      if (marker._lngLat.lng === church.coordinates[0] && 
-          marker._lngLat.lat === church.coordinates[1]) {
-        marker.togglePopup();
-      }
-    });
-  };
-
-  return { mapContainer, flyToChurch };
-};
-
 const Churches = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
-  const [viewMode, setViewMode] = useState("list");
 
   // Complete church data with phone numbers
   const churches: Church[] = [
@@ -388,8 +290,6 @@ const Churches = () => {
     }
   ];
 
-  const { mapContainer, flyToChurch } = useChurchMap(churches);
-
   // Filter churches based on category and search query
   const categories = {
     all: churches,
@@ -429,107 +329,51 @@ const Churches = () => {
           </p>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-6">
-          <div className="w-full md:w-1/3 space-y-4">
-            {/* Search and Filters */}
-            <Card className="p-4">
-              <SearchBar 
-                value={searchQuery}
-                onChange={setSearchQuery}
-                placeholder="Search by name, location, or phone..."
+        <div className="space-y-6">
+          {/* Search and Filters */}
+          <Card className="p-4">
+            <SearchBar 
+              value={searchQuery}
+              onChange={setSearchQuery}
+              placeholder="Search by name, location, or phone..."
+            />
+            
+            <div className="mt-4 flex flex-wrap gap-2">
+              <QuickFilter 
+                label="All Churches"
+                count={categories.all.length}
+                isActive={selectedFilter === "all"}
+                onClick={() => setSelectedFilter("all")}
               />
-              
-              <div className="mt-4 flex flex-wrap gap-2">
-                <QuickFilter 
-                  label="All Churches"
-                  count={categories.all.length}
-                  isActive={selectedFilter === "all"}
-                  onClick={() => setSelectedFilter("all")}
-                />
-                <QuickFilter 
-                  label="English"
-                  count={categories.english.length}
-                  isActive={selectedFilter === "english"}
-                  onClick={() => setSelectedFilter("english")}
-                />
-                <QuickFilter 
-                  label="International"
-                  count={categories.international.length}
-                  isActive={selectedFilter === "international"}
-                  onClick={() => setSelectedFilter("international")}
-                />
-              </div>
-            </Card>
+              <QuickFilter 
+                label="English"
+                count={categories.english.length}
+                isActive={selectedFilter === "english"}
+                onClick={() => setSelectedFilter("english")}
+              />
+              <QuickFilter 
+                label="International"
+                count={categories.international.length}
+                isActive={selectedFilter === "international"}
+                onClick={() => setSelectedFilter("international")}
+              />
+            </div>
+          </Card>
 
-            {/* Church List */}
-            <Card className="p-4">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg font-semibold">
-                  {filteredChurches.length} Churches Found
-                </h2>
-                <div className="flex gap-2">
-                  <Button
-                    variant={viewMode === "list" ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setViewMode("list")}
-                  >
-                    List
-                  </Button>
-                  <Button
-                    variant={viewMode === "map" ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setViewMode("map")}
-                    className="md:hidden"
-                  >
-                    Map
-                  </Button>
-                </div>
-              </div>
+          {/* Church List */}
+          <Card className="p-4">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">
+                {filteredChurches.length} Churches Found
+              </h2>
+            </div>
 
-              <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
-                {filteredChurches.map((church) => (
-                  <div
-                    key={church.id}
-                    className="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer"
-                    onClick={() => flyToChurch(church)}
-                  >
-                    <h3 className="font-semibold text-lg mb-2">{church.name}</h3>
-                    <p className="text-gray-600 text-sm mb-3">{church.description}</p>
-                    
-                    <div className="space-y-2 text-sm">
-                      <div className="flex items-start gap-2">
-                        <MapPin className="w-4 h-4 text-gray-500 mt-0.5" />
-                        <span>{church.location}</span>
-                      </div>
-                      
-                      <div className="flex items-center gap-2">
-                        <Phone className="w-4 h-4 text-gray-500" />
-                        <span>{church.phone}</span>
-                      </div>
-                      
-                      <div className="flex items-start gap-2">
-                        <Clock className="w-4 h-4 text-gray-500 mt-0.5" />
-                        <div>
-                          {church.serviceTimes.map((service, index) => (
-                            <div key={index}>
-                              {service.type}: {service.time}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </Card>
-          </div>
-
-          {/* Map Section */}
-          <div className={`w-full md:w-2/3 ${viewMode === "map" ? "" : "hidden md:block"}`}>
-            <Card className="h-[700px] p-4">
-              <div ref={mapContainer} className="h-full rounded-lg" />
-            </Card>
-          </div>
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {filteredChurches.map((church) => (
+                <ChurchCard key={church.id} church={church} />
+              ))}
+            </div>
+          </Card>
         </div>
       </div>
     </div>
