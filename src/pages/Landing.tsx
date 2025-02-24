@@ -35,7 +35,7 @@ const Landing = () => {
       <section
         className="pt-24 pb-16 px-4 bg-gradient-to-br from-social-primary/10 to-social-secondary/10 relative" // Added relative positioning
         style={{
-          backgroundImage: 'url("output (9).jpg")', // Added background image
+          backgroundImage: 'url("banner.png")', // Added background image
           backgroundSize: "cover", // Adjust as needed (cover, contain, etc.)
           backgroundPosition: "center", // Adjust as needed
           backgroundRepeat: "no-repeat", //prevent image from repeating
