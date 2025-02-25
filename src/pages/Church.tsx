@@ -35,8 +35,7 @@ interface Church {
 
 
 
-
-const CHURCHES: Church[] = [
+const CHURCHES = [
   {
     name: "Bethel French SDA Church",
     address: "5431 S Rio Grande Ave, Orlando, FL",
@@ -48,249 +47,276 @@ const CHURCHES: Church[] = [
     websiteUrl: "https://bethelfrench.sda.org",
     serviceTimes: [
       { type: "Sabbath School", day: "Saturday", time: "9:30 AM" },
-      { type: "Worship Service", day: "Saturday", time: "11:00 AM" }
-    ]
+      { type: "Worship Service", day: "Saturday", time: "11:00 AM" },
+    ],
   },
-
   {
     name: "MT Sinai Seventh Day Adventist Church",
     address: "2610 Orange Center Blvd, Orlando, FL",
-    description: "A diverse community serving the Orange Center area.",
-    missionStatement: "Building faith and serving our community with love.",
+    description: "A community focused on spreading the love of Christ.",
+    missionStatement: "To uplift and serve our community through faith and fellowship.",
     location: "Orlando, FL",
-    contactEmail: "mtsinaisda@sda.org",
-    contactPhone: "(555) 234-5678",
-    websiteUrl: "https://mtsinaisda.org",
+    contactEmail: "mtsinai@sda.org",
+    contactPhone: "(407) 298-7877",
+    websiteUrl: "https://mtsinai.sda.org",
     serviceTimes: [
       { type: "Sabbath School", day: "Saturday", time: "9:00 AM" },
-      { type: "Worship Service", day: "Saturday", time: "10:30 AM" }
-    ]
+      { type: "Worship Service", day: "Saturday", time: "10:30 AM" },
+    ],
   },
   {
     name: "University Seventh-Day Adventist Church",
     address: "9191 University Blvd, Orlando, FL",
-    description: "Serving the university community and beyond.",
-    missionStatement: "Educating minds and nurturing spirits.",
+    description: "A church integrated with educational and administrative ministries.",
+    missionStatement: "To educate, serve, and inspire through the love of God.",
     location: "Orlando, FL",
-    contactEmail: "universitysda@sda.org",
-    contactPhone: "(555) 345-6789",
-    websiteUrl: "https://universitysda.org",
+    contactEmail: "universitychurch@sda.org",
+    contactPhone: "(407) 657-4696",
+    websiteUrl: "https://universitychurch.sda.org",
     serviceTimes: [
       { type: "Sabbath School", day: "Saturday", time: "9:30 AM" },
-      { type: "Worship Service", day: "Saturday", time: "11:00 AM" }
-    ]
+      { type: "Worship Service", day: "Saturday", time: "11:00 AM" },
+    ],
   },
   {
-    name: "Seventh-day Adventist Church",
+    name: "Seventh-day Adventist Church Orlando",
     address: "30 E Evans St, Orlando, FL",
-    description: "A historic Adventist church in downtown Orlando.",
-    missionStatement: "Spreading hope and serving our community.",
+    description: "A traditional SDA church serving its community with faith and dedication.",
+    missionStatement: "To spread the gospel and serve our community with love and compassion.",
     location: "Orlando, FL",
-    contactEmail: "orlandosda@sda.org",
-    contactPhone: "(555) 456-7890",
-    websiteUrl: "https://orlandosda.org",
+    contactEmail: "orlandochurch@sda.org",
+    contactPhone: "(407) 894-6213",
+    websiteUrl: "https://orlandochurch.sda.org",
     serviceTimes: [
       { type: "Sabbath School", day: "Saturday", time: "9:45 AM" },
-      { type: "Worship Service", day: "Saturday", time: "11:15 AM" }
-    ]
+      { type: "Worship Service", day: "Saturday", time: "11:15 AM" },
+    ],
   },
   {
     name: "Vietnamese Seventh Day Adventist Church",
     address: "4417 N Powers Dr, Orlando, FL",
-    description: "A Vietnamese-speaking Adventist community.",
-    missionStatement: "Sharing Christ's love in our community.",
+    description: "A church serving the Vietnamese community in Orlando with faith and cultural connection.",
+    missionStatement: "To nurture faith and community among Vietnamese believers in Orlando.",
     location: "Orlando, FL",
-    contactEmail: "vietnamesesda@sda.org",
-    contactPhone: "(555) 567-8901",
-    websiteUrl: "https://vietnamesesda.org",
+    contactEmail: "vietnamese@sda.org",
+    contactPhone: "(407) 298-1119",
+    websiteUrl: "https://vietnamese.sda.org",
     serviceTimes: [
       { type: "Sabbath School", day: "Saturday", time: "9:30 AM" },
-      { type: "Worship Service", day: "Saturday", time: "11:00 AM" }
-    ]
+      { type: "Worship Service", day: "Saturday", time: "11:00 AM" },
+    ],
   },
   {
     name: "Guilgal Seventh Day Adventist Church",
     address: "2909 N Pine Hills Rd, Orlando, FL",
-    description: "Serving the Pine Hills community.",
-    missionStatement: "Growing in faith, serving with love.",
+    description: "A vibrant church community in Orlando, fostering spiritual growth and fellowship.",
+    missionStatement: "To be a beacon of hope and love in the Pine Hills community.",
     location: "Orlando, FL",
     contactEmail: "guilgal@sda.org",
-    contactPhone: "(555) 678-9012",
-    websiteUrl: "https://guilgal.org",
+    contactPhone: "(407) 578-1488",
+    websiteUrl: "https://guilgal.sda.org",
     serviceTimes: [
       { type: "Sabbath School", day: "Saturday", time: "9:30 AM" },
-      { type: "Worship Service", day: "Saturday", time: "11:00 AM" }
-    ]
+      { type: "Worship Service", day: "Saturday", time: "11:00 AM" },
+    ],
   },
   {
     name: "Lake Buena Vista Spanish SDA Church",
     address: "3979 S Orange Blossom Trl, Orlando, FL",
-    description: "A Spanish-speaking Adventist community.",
-    missionStatement: "Serving our Hispanic community with love.",
+    description: "A Spanish-speaking Seventh-day Adventist church in Orlando, serving the Hispanic community.",
+    missionStatement: "To spread the gospel in Spanish and serve our community with cultural sensitivity.",
     location: "Orlando, FL",
-    contactEmail: "lbvspansda@sda.org",
-    contactPhone: "(555) 789-0123",
-    websiteUrl: "https://lbvspansda.org",
+    contactEmail: "lakebuenavista@sda.org",
+    contactPhone: "(407) 704-3068",
+    websiteUrl: "https://lakebuenavista.sda.org",
     serviceTimes: [
       { type: "Sabbath School", day: "Saturday", time: "9:30 AM" },
-      { type: "Worship Service", day: "Saturday", time: "11:00 AM" }
-    ]
+      { type: "Worship Service", day: "Saturday", time: "11:00 AM" },
+    ],
   },
   {
     name: "Beracah Seventh Day Adventist Church",
     address: "6330 Moore St, Orlando, FL",
-    description: "A community of faith in Orlando.",
-    missionStatement: "Blessing others through service and worship.",
+    description: "A dedicated SDA congregation in Orlando, committed to spiritual growth and community service.",
+    missionStatement: "To nurture faith and serve our community with dedication and love.",
     location: "Orlando, FL",
     contactEmail: "beracah@sda.org",
-    contactPhone: "(555) 890-1234",
-    websiteUrl: "https://beracah.org",
+    contactPhone: "(407) 295-6035",
+    websiteUrl: "https://beracah.sda.org",
     serviceTimes: [
       { type: "Sabbath School", day: "Saturday", time: "9:30 AM" },
-      { type: "Worship Service", day: "Saturday", time: "11:00 AM" }
-    ]
+      { type: "Worship Service", day: "Saturday", time: "11:00 AM" },
+    ],
   },
   {
     name: "Pine Hills Seventh Day Adventist Church",
     address: "4955 Rose Ave, Orlando, FL",
-    description: "Serving the Pine Hills community.",
-    missionStatement: "Growing in faith, serving our community.",
+    description: "Located in the Pine Hills community of Orlando, serving with faith and community spirit.",
+    missionStatement: "To be a spiritual home and community resource in Pine Hills.",
     location: "Orlando, FL",
     contactEmail: "pinehills@sda.org",
-    contactPhone: "(555) 901-2345",
-    websiteUrl: "https://pinehills.org",
+    contactPhone: "(407) 523-3486",
+    websiteUrl: "https://pinehills.sda.org",
     serviceTimes: [
       { type: "Sabbath School", day: "Saturday", time: "9:30 AM" },
-      { type: "Worship Service", day: "Saturday", time: "11:00 AM" }
-    ]
+      { type: "Worship Service", day: "Saturday", time: "11:00 AM" },
+    ],
   },
   {
     name: "Lake Buena Vista SDA Church",
     address: "11414 S Apopka Vineland Rd, Orlando, FL",
-    description: "Serving the Lake Buena Vista area.",
-    missionStatement: "Building faith and community together.",
+    description: "A community church in the Lake Buena Vista area of Orlando, welcoming all with open arms.",
+    missionStatement: "To provide a welcoming spiritual home in the Lake Buena Vista community.",
     location: "Orlando, FL",
-    contactEmail: "lbv@sda.org",
-    contactPhone: "(555) 012-3456",
-    websiteUrl: "https://lbv.org",
+    contactEmail: "lakebuenavistacommunity@sda.org",
+    contactPhone: "(407) 791-6266",
+    websiteUrl: "https://lakebuenavistacommunity.sda.org",
     serviceTimes: [
       { type: "Sabbath School", day: "Saturday", time: "9:30 AM" },
-      { type: "Worship Service", day: "Saturday", time: "11:00 AM" }
-    ]
+      { type: "Worship Service", day: "Saturday", time: "11:00 AM" },
+    ],
   },
   {
     name: "Bethel Seventh-Day Adventist Church",
     address: "2809 Forest City Tr, Orlando, FL",
-    description: "A historic Adventist church in Orlando.",
-    missionStatement: "Serving our community with love and faith.",
+    description: "Serving the community with faith and fellowship, fostering a sense of belonging.",
+    missionStatement: "To foster a community of faith and fellowship in Orlando.",
     location: "Orlando, FL",
-    contactEmail: "bethel@sda.org",
-    contactPhone: "(555) 234-5678",
-    websiteUrl: "https://bethel.org",
+    contactEmail: "bethelcommunity@sda.org",
+    contactPhone: "(407) 293-4850",
+    websiteUrl: "https://bethelcommunity.sda.org",
     serviceTimes: [
       { type: "Sabbath School", day: "Saturday", time: "9:45 AM" },
-      { type: "Worship Service", day: "Saturday", time: "11:15 AM" }
-    ]
+      { type: "Worship Service", day: "Saturday", time: "11:15 AM" },
+    ],
   },
   {
     name: "Filipino-American Seventh Day Adventist Church",
     address: "1425 Davidson St, Orlando, FL",
-    description: "A Filipino-speaking Adventist community.",
-    missionStatement: "Sharing faith and culture together.",
+    description: "A culturally rich SDA church serving the Filipino community in Orlando.",
+    missionStatement: "To unite and serve the Filipino-American community through faith.",
     location: "Orlando, FL",
-    contactEmail: "filipino@sda.org",
-    contactPhone: "(555) 345-6789",
-    websiteUrl: "https://filipino.org",
+    contactEmail: "filipinoamerican@sda.org",
+    contactPhone: "(407) 422-5747",
+    websiteUrl: "https://filipinoamerican.sda.org",
     serviceTimes: [
       { type: "Sabbath School", day: "Saturday", time: "9:30 AM" },
-      { type: "Worship Service", day: "Saturday", time: "11:00 AM" }
-    ]
+      { type: "Worship Service", day: "Saturday", time: "11:00 AM" },
+    ],
   },
   {
     name: "Brazilian Community Church",
     address: "7528 Universal Blvd, Orlando, FL",
-    description: "A Portuguese-speaking Adventist community.",
-    missionStatement: "Serving our Brazilian community with love.",
+    description: "A vibrant church with a strong Brazilian community in Orlando, celebrating faith and culture.",
+    missionStatement: "To celebrate our Brazilian heritage and faith in Orlando.",
     location: "Orlando, FL",
-    contactEmail: "brazilian@sda.org",
-    contactPhone: "(555) 456-7890",
-    websiteUrl: "https://brazilian.org",
+    contactEmail: "braziliancommunity@sda.org",
+    contactPhone: "(407) 903-9053",
+    websiteUrl: "https://braziliancommunity.sda.org",
     serviceTimes: [
       { type: "Sabbath School", day: "Saturday", time: "9:30 AM" },
-      { type: "Worship Service", day: "Saturday", time: "11:00 AM" }
-    ]
+      { type: "Worship Service", day: "Saturday", time: "11:00 AM" },
+    ],
   },
   {
     name: "Beraca 1 Church",
     address: "1517 Mercy Dr, Orlando, FL",
-    description: "A community of faith in Orlando.",
-    missionStatement: "Serving with compassion and love.",
+    description: "A dedicated SDA church fostering spiritual growth and community connection.",
+    missionStatement: "To foster spiritual growth and community in Orlando.",
     location: "Orlando, FL",
     contactEmail: "beraca1@sda.org",
-    contactPhone: "(555) 567-8901",
-    websiteUrl: "https://beraca1.org",
+    contactPhone: "(407) 704-7967",
+    websiteUrl: "https://beraca1.sda.org",
     serviceTimes: [
       { type: "Sabbath School", day: "Saturday", time: "9:30 AM" },
-      { type: "Worship Service", day: "Saturday", time: "11:00 AM" }
-    ]
+      { type: "Worship Service", day: "Saturday", time: "11:00 AM" },
+    ],
   },
   {
-    name: "Pine Hills Seventh Day Adventist Community Center",
+    name: "Pine Hills Seventh Day Adventist Church Center",
     address: "4955 Rose Ave, Orlando, FL",
-    description: "A community center serving Pine Hills.",
-    missionStatement: "Building community through service.",
+    description: "Another branch of the Pine Hills SDA community, focusing on community outreach and service.",
+    missionStatement: "To serve and uplift the Pine Hills community.",
     location: "Orlando, FL",
-    contactEmail: "pinehillscc@sda.org",
-    contactPhone: "(555) 678-9012",
-    websiteUrl: "https://pinehillscc.org",
+    contactEmail: "pinehillscommunity@sda.org",
+    contactPhone: "(407) 291-4816",
+    websiteUrl: "https://pinehillscommunity.sda.org",
     serviceTimes: [
       { type: "Sabbath School", day: "Saturday", time: "9:30 AM" },
-      { type: "Worship Service", day: "Saturday", time: "11:00 AM" }
-    ]
+      { type: "Worship Service", day: "Saturday", time: "11:00 AM" },
+    ],
   },
   {
-    name: "Emmanuel Church of 7th Day Adventis",
+    name: "Emmanuel Church of 7th Day Adventists",
     address: "6424 Arundel Dr, Orlando, FL",
-    description: "A community of faith in Orlando.",
-    missionStatement: "Embracing all with God's love.",
+    description: "A church dedicated to spreading the Gospel and serving the community in Orlando.",
+    missionStatement: "To spread the Gospel and serve our community with love.",
     location: "Orlando, FL",
     contactEmail: "emmanuel@sda.org",
-    contactPhone: "(555) 789-0123",
-    websiteUrl: "https://emmanuel.org",
+    contactPhone: "(407) 299-9483",
+    websiteUrl: "https://emmanuel.sda.org",
     serviceTimes: [
       { type: "Sabbath School", day: "Saturday", time: "9:30 AM" },
-      { type: "Worship Service", day: "Saturday", time: "11:10 AM" }
-    ]
+      { type: "Worship Service", day: "Saturday", time: "11:10 AM" },
+    ],
   },
   {
     name: "South Orlando Seventh Day Adventist Church",
     address: "1112 W Oak Ridge Rd, Orlando, FL",
-    description: "Serving South Orlando.",
-    missionStatement: "Growing in faith, serving our community.",
+    description: "Serving the South Orlando community with faith, unity, and a welcoming spirit.",
+    missionStatement: "To serve the South Orlando community with faith and unity.",
     location: "Orlando, FL",
     contactEmail: "southorlando@sda.org",
-    contactPhone: "(555) 890-1234",
-    websiteUrl: "https://southorlando.org",
+    contactPhone: "(407) 855-8722",
+    websiteUrl: "https://southorlando.sda.org",
     serviceTimes: [
       { type: "Sabbath School", day: "Saturday", time: "9:30 AM" },
-      { type: "Worship Service", day: "Saturday", time: "11:00 AM" }
-    ]
+      { type: "Worship Service", day: "Saturday", time: "11:00 AM" },
+    ],
   },
   {
     name: "Emmanuel Seventh Day Adventist Church",
     address: "6350 Arundel Dr, Orlando, FL",
-    description: "A vibrant Adventist community.",
-    missionStatement: "Serving with love and compassion.",
+    description: "A church committed to community and spiritual growth in the heart of Orlando.",
+    missionStatement: "To foster community and spiritual growth in Orlando.",
     location: "Orlando, FL",
-    contactEmail: "emmanuel2@sda.org",
-    contactPhone: "(555) 901-2345",
-    websiteUrl: "https://emmanuel2.org",
+    contactEmail: "emmanuelcommunity@sda.org",
+    contactPhone: "(407) 704-7905",
+    websiteUrl: "https://emmanuelcommunity.sda.org",
     serviceTimes: [
       { type: "Sabbath School", day: "Saturday", time: "9:45 AM" },
-      { type: "Worship Service", day: "Saturday", time: "11:15 AM" }
-    ]
-  }
-];
+      { type: "Worship Service", day: "Saturday", time: "11:15 AM" },
+    ],
+  },
+  {
+    name: "Beryl Wisdom Seven Day Adventists School",
+    address: "4955 Rose Ave, Orlando, FL",
+    description: "A church focused on educating and nurturing future generations with faith and wisdom.",
+    missionStatement: "To educate and nurture future generations with faith and wisdom.",
+    location: "Orlando, FL",
+    contactEmail: "berylwisdom@sda.org",
+    contactPhone: "(407) 291-3073",
+    websiteUrl: "https://berylwisdom.sda.org",
+    serviceTimes: [
+      { type: "Sabbath School", day: "Saturday", time: "9:30 AM" },
+      { type: "Worship Service", day: "Saturday", time: "11:00 AM" },
+    ],
+  },
+  {
+    name: "Pine Hills Seventh Day Adventist Community Center",
+    address: "4955 Rose Ave, Orlando, FL",
+    description: "A community center fostering fellowship, spiritual growth, and outreach in Pine Hills.",
+    missionStatement: "To foster fellowship and spiritual growth in the Pine Hills community.",
+    location: "Orlando, FL",
+    contactEmail: "pinehillscommunitycenter@sda.org",
+    contactPhone: "(407) 299-8704",
+    websiteUrl: "https://pinehillscommunitycenter.sda.org",
+    serviceTimes: [
+      { type: "Sabbath School", day: "Saturday", time: "9:30 AM" },
+      { type: "Worship Service", day: "Saturday", time: "11:00 AM" },
+    ],
+  },
+] as const;
 
 
 
@@ -304,12 +330,19 @@ const ChurchPage = () => {
     return phone.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
   };
 
+  const handleChurchChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedChurch = CHURCHES.find(church => church.name === e.target.value);
+    if (selectedChurch) {
+      setActiveChurch(selectedChurch);
+    }
+  };
+
   return (
     <div className="container mx-auto p-6 max-w-4xl">
       {/* Church Selection */}
       <select 
         value={activeChurch.name}
-        onChange={(e) => setActiveChurch(CHURCHES.find(church => church.name === e.target.value)!)}
+        onChange={handleChurchChange}
         className="mb-6 w-full rounded-md border p-2 bg-white"
       >
         {CHURCHES.map(church => (
