@@ -1,13 +1,11 @@
-
 import { Card } from "@/components/ui/card";
 import { BookOpen, Users, Church, Calendar, Heart } from "lucide-react";
-
 const LearnMore = () => {
-  return (
-    <div className="min-h-screen bg-gray-50 py-12">
+  return <div className="min-h-screen bg-gray-50 py-12">
       <div className="container max-w-4xl mx-auto px-4">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">About Adventist.com</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">About 
+Adventist.com</h1>
           <p className="text-xl text-gray-600">
             Discover how we're building a digital space for the global Adventist community
           </p>
@@ -65,8 +63,6 @@ const LearnMore = () => {
           </Card>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default LearnMore;
