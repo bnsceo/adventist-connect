@@ -18,14 +18,14 @@ import { ProfileEditForm } from "@/components/social/ProfileEditForm";
 
 const profileUser: User = {
   id: "1",
-  name: "Sarah Johnson",
-  role: "Youth Leader",
-  church: "Central Adventist Church",
+  name: "Anderson Paulino",
+  role: "Platform Founder",
+  church: "Adventist.com online Church",
   avatar: "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
   followers: 245,
   following: 188,
   bio: "Passionate about youth ministry and spiritual growth. Leading the youth ministry at Central Adventist Church. \n\n📖 Currently studying the Book of Daniel\n🎵 Worship team leader\n🌱 Mentoring young adults",
-  location: "Los Angeles, CA",
+  location: "Orlando, FL",
   ministries: ["Youth Ministry", "Worship Team", "Bible Study", "Community Outreach"],
   coverImage: "https://images.unsplash.com/photo-1501854140801-50d01698950b"
 };
