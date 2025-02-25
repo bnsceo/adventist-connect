@@ -19,11 +19,7 @@ Adventist.com</h1>
               </div>
               <div>
                 <h2 className="text-2xl font-semibold mb-2">Our Mission</h2>
-                <p className="text-gray-600">
-                  To create a vibrant online community that connects Seventh-day Adventists worldwide,
-                  fostering spiritual growth, fellowship, and mission outreach through meaningful
-                  digital interactions and real-world connections.
-                </p>
+                <p className="text-gray-600 text-center font-normal px-0 py-0 my-0 mx-0">To create a vibrant online community that connects Seventh-day Adventists worldwide, fostering spiritual growth, fellowship, and mission outreach through meaningful digital interactions and real connections.</p>
               </div>
             </div>
           </Card>
@@ -35,7 +31,7 @@ Adventist.com</h1>
                 <Users className="w-5 h-5 text-social-primary shrink-0 mt-1" />
                 <div>
                   <h3 className="font-semibold mb-1">Community Connection</h3>
-                  <p className="text-gray-600">Connect with believers who share your faith and values</p>
+                  <p className="text-gray-600">Connect with believers who share the same faith and values</p>
                 </div>
               </div>
               <div className="flex gap-3">
