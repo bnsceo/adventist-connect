@@ -52,28 +52,31 @@ export interface Testimonial {
   category: string;
 }
 
+export interface ServiceTime {
+  type: string;
+  day: string;
+  time: string;
+}
+
 export interface Church {
   id: string;
   name: string;
-  description?: string;
-  missionStatement?: string;
-  location?: string;
-  contactEmail?: string;
-  contactPhone?: string;
-  websiteUrl?: string;
+  description: string;
+  missionStatement: string;
+  location: string;
+  contactEmail: string;
+  contactPhone: string;
+  websiteUrl: string;
   serviceTimes: ServiceTime[];
-  adminUserId: string;
-  createdAt: string;
-  updatedAt: string;
+  adminUserId?: string;
+  createdAt?: string;
+  updatedAt?: string;
   bannerImage?: string;
   logoImage?: string;
-  coordinates?: [number, number]; // Added coordinates as an optional tuple of [longitude, latitude]
-}
-
-export interface ServiceTime {
-  day: string;
-  time: string;
-  type: string;
+  coordinates?: [number, number];
+  address?: string;
+  category?: string;
+  phone?: string;
 }
 
 export interface Event {

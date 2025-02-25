@@ -26,271 +26,349 @@ const Churches = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
 
-  // Complete church data with phone numbers
   const churches: Church[] = [
     {
       id: "1",
       name: "Bethel French SDA Church",
       description: "A welcoming Seventh-day Adventist church in Orlando.",
       location: "5431 S Rio Grande Ave, Orlando, FL",
-      phone: "(407) 812-9334",
+      contactPhone: "(407) 812-9334",
       coordinates: [-81.34, 28.54],
       serviceTimes: [
         { day: "Saturday", time: "9:30 AM", type: "Sabbath School" },
         { day: "Saturday", time: "11:00 AM", type: "Worship Service" }
       ],
-      category: "international"
+      category: "international",
+      missionStatement: "",
+      contactEmail: "",
+      websiteUrl: "",
+      phone: "(407) 812-9334"
     },
     {
       id: "2",
       name: "MT Sinai Seventh Day Adventist Church",
       description: "A community focused on spreading the love of Christ.",
       location: "2610 Orange Center Blvd, Orlando, FL",
-      phone: "(407) 298-7877",
+      contactPhone: "(407) 298-7877",
       coordinates: [-81.39, 28.54],
       serviceTimes: [
         { day: "Saturday", time: "9:00 AM", type: "Sabbath School" },
         { day: "Saturday", time: "10:30 AM", type: "Worship Service" }
       ],
-      category: "english"
+      category: "english",
+      missionStatement: "",
+      contactEmail: "",
+      websiteUrl: "",
+      phone: "(407) 298-7877"
     },
     {
       id: "3",
       name: "University Seventh-Day Adventist Church – School & Office",
       description: "A church integrated with educational and administrative ministries.",
       location: "9191 University Blvd, Orlando, FL",
-      phone: "(407) 657-4696",
+      contactPhone: "(407) 657-4696",
       coordinates: [-81.30, 28.55],
       serviceTimes: [
         { day: "Saturday", time: "9:30 AM", type: "Sabbath School" },
         { day: "Saturday", time: "11:00 AM", type: "Worship Service" }
       ],
-      category: "english"
+      category: "english",
+      missionStatement: "",
+      contactEmail: "",
+      websiteUrl: "",
+      phone: "(407) 657-4696"
     },
     {
       id: "4",
       name: "Seventh-day Adventist Church",
       description: "A traditional SDA church serving its community.",
       location: "30 E Evans St, Orlando, FL",
-      phone: "(407) 894-6213",
+      contactPhone: "(407) 894-6213",
       coordinates: [-81.38, 28.54],
       serviceTimes: [
         { day: "Saturday", time: "9:45 AM", type: "Sabbath School" },
         { day: "Saturday", time: "11:15 AM", type: "Worship Service" }
       ],
-      category: "english"
+      category: "english",
+      missionStatement: "",
+      contactEmail: "",
+      websiteUrl: "",
+      phone: "(407) 894-6213"
     },
     {
       id: "5",
       name: "Vietnamese Seventh Day Adventist Church",
       description: "A church serving the Vietnamese community in Orlando.",
       location: "4417 N Powers Dr, Orlando, FL",
-      phone: "(407) 298-1119",
+      contactPhone: "(407) 298-1119",
       coordinates: [-81.40, 28.55],
       serviceTimes: [
         { day: "Saturday", time: "9:30 AM", type: "Sabbath School" },
         { day: "Saturday", time: "11:00 AM", type: "Worship Service" }
       ],
-      category: "international"
+      category: "international",
+      missionStatement: "",
+      contactEmail: "",
+      websiteUrl: "",
+      phone: "(407) 298-1119"
     },
     {
       id: "6",
       name: "Guilgal Seventh Day Adventist Church",
       description: "A vibrant church community in Orlando.",
       location: "2909 N Pine Hills Rd, Orlando, FL",
-      phone: "(407) 578-1488",
+      contactPhone: "(407) 578-1488",
       coordinates: [-81.42, 28.56],
       serviceTimes: [
         { day: "Saturday", time: "9:30 AM", type: "Sabbath School" },
         { day: "Saturday", time: "11:00 AM", type: "Worship Service" }
       ],
-      category: "english"
+      category: "english",
+      missionStatement: "",
+      contactEmail: "",
+      websiteUrl: "",
+      phone: "(407) 578-1488"
     },
     {
       id: "7",
       name: "Lake Buena Vista Spanish SDA Church",
       description: "A Spanish-speaking Seventh-day Adventist church in Orlando.",
       location: "3979 S Orange Blossom Trl, Orlando, FL",
-      phone: "(407) 704-3068",
+      contactPhone: "(407) 704-3068",
       coordinates: [-81.45, 28.47],
       serviceTimes: [
         { day: "Saturday", time: "9:30 AM", type: "Sabbath School" },
         { day: "Saturday", time: "11:00 AM", type: "Worship Service" }
       ],
-      category: "international"
+      category: "international",
+      missionStatement: "",
+      contactEmail: "",
+      websiteUrl: "",
+      phone: "(407) 704-3068"
     },
     {
       id: "8",
       name: "Beracah Seventh Day Adventist Church",
       description: "A dedicated SDA congregation in Orlando.",
       location: "6330 Moore St, Orlando, FL",
-      phone: "(407) 295-6035",
+      contactPhone: "(407) 295-6035",
       coordinates: [-81.30, 28.52],
       serviceTimes: [
         { day: "Saturday", time: "9:30 AM", type: "Sabbath School" },
         { day: "Saturday", time: "11:00 AM", type: "Worship Service" }
       ],
-      category: "english"
+      category: "english",
+      missionStatement: "",
+      contactEmail: "",
+      websiteUrl: "",
+      phone: "(407) 295-6035"
     },
     {
       id: "9",
       name: "Pine Hills Seventh Day Adventist Church – Hall",
       description: "Located in the Pine Hills community of Orlando.",
       location: "4955 Rose Ave, Orlando, FL",
-      phone: "(407) 523-3486",
+      contactPhone: "(407) 523-3486",
       coordinates: [-81.30, 28.54],
       serviceTimes: [
         { day: "Saturday", time: "9:30 AM", type: "Sabbath School" },
         { day: "Saturday", time: "11:00 AM", type: "Worship Service" }
       ],
-      category: "english"
+      category: "english",
+      missionStatement: "",
+      contactEmail: "",
+      websiteUrl: "",
+      phone: "(407) 523-3486"
     },
     {
       id: "10",
       name: "Lake Buena Vista SDA Church",
       description: "A community church in the Lake Buena Vista area of Orlando.",
       location: "11414 S Apopka Vineland Rd, Orlando, FL",
-      phone: "(407) 791-6266",
+      contactPhone: "(407) 791-6266",
       coordinates: [-81.50, 28.45],
       serviceTimes: [
         { day: "Saturday", time: "9:30 AM", type: "Sabbath School" },
         { day: "Saturday", time: "11:00 AM", type: "Worship Service" }
       ],
-      category: "english"
+      category: "english",
+      missionStatement: "",
+      contactEmail: "",
+      websiteUrl: "",
+      phone: "(407) 791-6266"
     },
     {
       id: "11",
       name: "Bethel Seventh-Day Adventist Church",
       description: "Serving the community with faith and fellowship.",
       location: "2809 Forest City Tr, Orlando, FL",
-      phone: "(407) 291-4850",
+      contactPhone: "(407) 291-4850",
       coordinates: [-81.35, 28.55],
       serviceTimes: [
         { day: "Saturday", time: "9:45 AM", type: "Sabbath School" },
         { day: "Saturday", time: "11:15 AM", type: "Worship Service" }
       ],
-      category: "english"
+      category: "english",
+      missionStatement: "",
+      contactEmail: "",
+      websiteUrl: "",
+      phone: "(407) 291-4850"
     },
     {
       id: "12",
       name: "Filipino-American Seventh Day Adventist Church",
       description: "A culturally rich SDA church serving the Filipino community.",
       location: "1425 Davidson St, Orlando, FL",
-      phone: "(407) 422-5747",
+      contactPhone: "(407) 422-5747",
       coordinates: [-81.37, 28.57],
       serviceTimes: [
         { day: "Saturday", time: "9:30 AM", type: "Sabbath School" },
         { day: "Saturday", time: "11:00 AM", type: "Worship Service" }
       ],
-      category: "international"
+      category: "international",
+      missionStatement: "",
+      contactEmail: "",
+      websiteUrl: "",
+      phone: "(407) 422-5747"
     },
     {
       id: "13",
       name: "Brazilian Community Church",
       description: "A vibrant church with a Brazilian community in Orlando.",
       location: "7528 Universal Blvd, Orlando, FL",
-      phone: "(407) 903-9053",
+      contactPhone: "(407) 903-9053",
       coordinates: [-81.28, 28.53],
       serviceTimes: [
         { day: "Saturday", time: "9:30 AM", type: "Sabbath School" },
         { day: "Saturday", time: "11:00 AM", type: "Worship Service" }
       ],
-      category: "international"
+      category: "international",
+      missionStatement: "",
+      contactEmail: "",
+      websiteUrl: "",
+      phone: "(407) 903-9053"
     },
     {
       id: "14",
       name: "Beraca 1 Church",
       description: "A dedicated SDA church fostering spiritual growth.",
       location: "1517 Mercy Dr, Orlando, FL",
-      phone: "(407) 704-7967",
+      contactPhone: "(407) 704-7967",
       coordinates: [-81.36, 28.56],
       serviceTimes: [
         { day: "Saturday", time: "9:30 AM", type: "Sabbath School" },
         { day: "Saturday", time: "11:00 AM", type: "Worship Service" }
       ],
-      category: "english"
+      category: "english",
+      missionStatement: "",
+      contactEmail: "",
+      websiteUrl: "",
+      phone: "(407) 704-7967"
     },
     {
       id: "15",
       name: "Pine Hills Seventh Day Adventist Church",
       description: "Another branch of the Pine Hills SDA community.",
       location: "4955 Rose Ave, Orlando, FL",
-      phone: "(407) 291-4816",
+      contactPhone: "(407) 291-4816",
       coordinates: [-81.29, 28.54],
       serviceTimes: [
         { day: "Saturday", time: "9:30 AM", type: "Sabbath School" },
         { day: "Saturday", time: "11:00 AM", type: "Worship Service" }
       ],
-      category: "english"
+      category: "english",
+      missionStatement: "",
+      contactEmail: "",
+      websiteUrl: "",
+      phone: "(407) 291-4816"
     },
     {
       id: "16",
       name: "Emmanuel Church of 7th Day Adventis",
       description: "A church dedicated to spreading the Gospel in Orlando.",
       location: "6424 Arundel Dr, Orlando, FL",
-      phone: "(407) 299-9483",
+      contactPhone: "(407) 299-9483",
       coordinates: [-81.32, 28.55],
       serviceTimes: [
         { day: "Saturday", time: "9:30 AM", type: "Sabbath School" },
         { day: "Saturday", time: "11:10 AM", type: "Worship Service" }
       ],
-      category: "english"
+      category: "english",
+      missionStatement: "",
+      contactEmail: "",
+      websiteUrl: "",
+      phone: "(407) 299-9483"
     },
     {
       id: "17",
       name: "South Orlando Seventh Day Adventist Church",
       description: "Serving the South Orlando community with faith and unity.",
       location: "1112 W Oak Ridge Rd, Orlando, FL",
-      phone: "(407) 855-8722",
+      contactPhone: "(407) 855-8722",
       coordinates: [-81.45, 28.50],
       serviceTimes: [
         { day: "Saturday", time: "9:30 AM", type: "Sabbath School" },
         { day: "Saturday", time: "11:00 AM", type: "Worship Service" }
       ],
-      category: "english"
+      category: "english",
+      missionStatement: "",
+      contactEmail: "",
+      websiteUrl: "",
+      phone: "(407) 855-8722"
     },
     {
       id: "18",
       name: "Emmanuel Seventh Day Adventist Church",
       description: "A church committed to community and spiritual growth.",
       location: "6350 Arundel Dr, Orlando, FL",
-      phone: "(407) 704-7905",
+      contactPhone: "(407) 704-7905",
       coordinates: [-81.33, 28.55],
       serviceTimes: [
         { day: "Saturday", time: "9:45 AM", type: "Sabbath School" },
         { day: "Saturday", time: "11:15 AM", type: "Worship Service" }
       ],
-      category: "english"
+      category: "english",
+      missionStatement: "",
+      contactEmail: "",
+      websiteUrl: "",
+      phone: "(407) 704-7905"
     },
     {
       id: "19",
       name: "Beryl Wisdom Seven Day Adventists School",
       description: "A church focused on educating and nurturing future generations.",
       location: "4955 Rose Ave, Orlando, FL",
-      phone: "(407) 291-3073",
+      contactPhone: "(407) 291-3073",
       coordinates: [-81.30, 28.54],
       serviceTimes: [
         { day: "Saturday", time: "9:30 AM", type: "Sabbath School" },
         { day: "Saturday", time: "11:00 AM", type: "Worship Service" }
       ],
-      category: "english"
+      category: "english",
+      missionStatement: "",
+      contactEmail: "",
+      websiteUrl: "",
+      phone: "(407) 291-3073"
     },
     {
       id: "20",
       name: "Pine Hills Seventh Day Adventist Community Center",
       description: "A community center fostering fellowship and spiritual growth.",
       location: "4955 Rose Ave, Orlando, FL",
-      phone: "(407) 299-8704",
+      contactPhone: "(407) 299-8704",
       coordinates: [-81.30, 28.54],
       serviceTimes: [
         { day: "Saturday", time: "9:30 AM", type: "Sabbath School" },
         { day: "Saturday", time: "11:00 AM", type: "Worship Service" }
       ],
-      category: "english"
+      category: "english",
+      missionStatement: "",
+      contactEmail: "",
+      websiteUrl: "",
+      phone: "(407) 299-8704"
     }
   ];
 
-  // Filter churches based on category and search query
   const categories = {
     all: churches,
     english: churches.filter(church => church.category === "english"),
@@ -300,10 +378,9 @@ const Churches = () => {
   const filteredChurches = categories[selectedFilter].filter(church =>
     church.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     church.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    church.phone.toLowerCase().includes(searchQuery.toLowerCase())
+    (church.contactPhone && church.contactPhone.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  // Quick filter component for categories
   const QuickFilter = ({ label, count, isActive, onClick }) => (
     <Button
       variant={isActive ? "default" : "outline"}
@@ -330,7 +407,6 @@ const Churches = () => {
         </div>
 
         <div className="space-y-6">
-          {/* Search and Filters */}
           <Card className="p-4">
             <SearchBar 
               value={searchQuery}
@@ -360,7 +436,6 @@ const Churches = () => {
             </div>
           </Card>
 
-          {/* Church List */}
           <Card className="p-4">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">
