@@ -7,16 +7,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
+import { Calendar, Heart, MessageCircle, Book } from 'lucide-react'
 
 
 
@@ -47,12 +40,12 @@ const CHURCHES: Church[] = [
   {
     name: "Bethel French SDA Church",
     address: "5431 S Rio Grande Ave, Orlando, FL",
-    description: "",
-    missionStatement: "",
+    description: "A vibrant French-speaking Seventh-day Adventist community in Orlando.",
+    missionStatement: "To serve and share the love of Christ with our community.",
     location: "Orlando, FL",
-    contactEmail: "",
-    contactPhone: "",
-    websiteUrl: "",
+    contactEmail: "bethelfrench@sda.org",
+    contactPhone: "(555) 123-4567",
+    websiteUrl: "https://bethelfrench.sda.org",
     serviceTimes: [
       { type: "Sabbath School", day: "Saturday", time: "9:30 AM" },
       { type: "Worship Service", day: "Saturday", time: "11:00 AM" }
@@ -66,21 +59,20 @@ const CHURCHES: Church[] = [
 
 const ChurchPage = () => {
   const [activeChurch, setActiveChurch] = useState<Church>(CHURCHES[0]);
-  const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState("about");
 
-  const handleSaveChanges = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsEditing(false);
+  const formatPhoneNumber = (phone: string): string => {
+    if (!phone) return '';
+    return phone.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-6 max-w-4xl">
       {/* Church Selection */}
       <select 
         value={activeChurch.name}
         onChange={(e) => setActiveChurch(CHURCHES.find(church => church.name === e.target.value)!)}
-        className="mb-4 w-full rounded-md border p-2"
+        className="mb-6 w-full rounded-md border p-2 bg-white"
       >
         {CHURCHES.map(church => (
           <option key={church.name} value={church.name}>
@@ -90,194 +82,141 @@ const ChurchPage = () => {
       </select>
 
       {/* Main Content */}
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="bg-white border border-gray-200">
-          <TabsTrigger value="about">About</TabsTrigger>
-          <TabsTrigger value="events">Events</TabsTrigger>
-          <TabsTrigger value="announcements">Announcements</TabsTrigger>
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className="w-full bg-white">
+          <TabsTrigger value="about" className="flex items-center gap-2">
+            <Book className="w-4 h-4" />
+            About
+          </TabsTrigger>
+          <TabsTrigger value="events" className="flex items-center gap-2">
+            <Heart className="w-4 h-4" />
+            Events
+          </TabsTrigger>
+          <TabsTrigger value="announcements" className="flex items-center gap-2">
+            <MessageCircle className="w-4 h-4" />
+            Announcements
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="about">
-          <Card>
+          <Card className="mt-4">
             <CardHeader>
-              <CardTitle>{activeChurch.name}</CardTitle>
+              <CardTitle className="text-3xl font-bold">{activeChurch.name}</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">Address:</h3>
-                  <p>{activeChurch.address}</p>
-                </div>
-                
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">Service Times:</h3>
-                  <div className="space-y-2">
-                    {activeChurch.serviceTimes.map((service, index) => (
-                      <div key={index} className="flex justify-between items-center border-b pb-2">
-                        <div>
-                          <p className="font-medium">{service.type}</p>
-                          <p className="text-sm text-gray-600">{service.day}</p>
-                        </div>
-                        <p className="text-gray-900">{service.time}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <Button onClick={() => setIsEditing(true)}>
-                  Edit Church Details
-                </Button>
+            <CardContent className="space-y-6">
+              {/* Address Section */}
+              <div className="space-y-2">
+                <h3 className="text-xl font-semibold text-gray-700">Location</h3>
+                <p className="text-gray-600">{activeChurch.address}</p>
               </div>
+
+              {/* Service Times Section */}
+              <div className="space-y-2">
+                <h3 className="text-xl font-semibold text-gray-700">Service Times</h3>
+                <div className="space-y-3">
+                  {activeChurch.serviceTimes.map((service, index) => (
+                    <div 
+                      key={index} 
+                      className="flex justify-between items-center p-3 bg-gray-50 rounded-lg"
+                    >
+                      <div>
+                        <p className="font-medium">{service.type}</p>
+                        <p className="text-sm text-gray-600">{service.day}</p>
+                      </div>
+                      <p className="text-gray-900 font-medium">{service.time}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Contact Information */}
+              <div className="space-y-2">
+                <h3 className="text-xl font-semibold text-gray-700">Contact Information</h3>
+                <div className="space-y-3">
+                  <p className="text-gray-600">
+                    <span className="font-medium">Phone:</span>{' '}
+                    {formatPhoneNumber(activeChurch.contactPhone)}
+                  </p>
+                  <p className="text-gray-600">
+                    <span className="font-medium">Email:</span>{' '}
+                    <a 
+                      href={`mailto:${activeChurch.contactEmail}`}
+                      className="text-blue-600 hover:underline"
+                    >
+                      {activeChurch.contactEmail}
+                    </a>
+                  </p>
+                  <p className="text-gray-600">
+                    <span className="font-medium">Website:</span>{' '}
+                    <a 
+                      href={activeChurch.websiteUrl}
+                      className="text-blue-600 hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {activeChurch.websiteUrl}
+                    </a>
+                  </p>
+                </div>
+              </div>
+
+              {/* Description */}
+              {activeChurch.description && (
+                <div className="space-y-2">
+                  <h3 className="text-xl font-semibold text-gray-700">About Us</h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {activeChurch.description}
+                  </p>
+                </div>
+              )}
+
+              {/* Mission Statement */}
+              {activeChurch.missionStatement && (
+                <div className="space-y-2">
+                  <h3 className="text-xl font-semibold text-gray-700">Mission Statement</h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {activeChurch.missionStatement}
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
 
         {/* Events Tab */}
         <TabsContent value="events">
-          <Card>
+          <Card className="mt-4">
             <CardContent className="pt-6">
-              <p className="text-gray-500 text-center py-8">
-                Church events coming soon!
-              </p>
+              <div className="text-center py-8">
+                <Calendar className="mx-auto mb-4 w-12 h-12 text-gray-400" />
+                <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                  Upcoming Events
+                </h3>
+                <p className="text-gray-500">
+                  Check back soon for upcoming church events and activities.
+                </p>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
 
         {/* Announcements Tab */}
         <TabsContent value="announcements">
-          <Card>
+          <Card className="mt-4">
             <CardContent className="pt-6">
-              <p className="text-gray-500 text-center py-8">
-                Church announcements coming soon!
-              </p>
+              <div className="text-center py-8">
+                <MessageCircle className="mx-auto mb-4 w-12 h-12 text-gray-400" />
+                <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                  Church Announcements
+                </h3>
+                <p className="text-gray-500">
+                  Check back soon for important church announcements.
+                </p>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
-
-      {/* Edit Dialog */}
-      <Dialog open={isEditing} onOpenChange={setIsEditing}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Edit Church Details</DialogTitle>
-          </DialogHeader>
-          
-          <form onSubmit={handleSaveChanges} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Name
-              </label>
-              <Input
-                value={activeChurch.name}
-                readOnly
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Address
-              </label>
-              <Textarea
-                value={activeChurch.address}
-                onChange={(e) =>
-                  setActiveChurch({ ...activeChurch, address: e.target.value })
-                }
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Description
-              </label>
-              <Textarea
-                value={activeChurch.description}
-                onChange={(e) =>
-                  setActiveChurch({ ...activeChurch, description: e.target.value })
-                }
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Mission Statement
-              </label>
-              <Textarea
-                value={activeChurch.missionStatement}
-                onChange={(e) =>
-                  setActiveChurch({ ...activeChurch, missionStatement: e.target.value })
-                }
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Location
-              </label>
-              <Input
-                value={activeChurch.location}
-                onChange={(e) =>
-                  setActiveChurch({ ...activeChurch, location: e.target.value })
-                }
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Contact Email
-              </label>
-              <Input
-                type="email"
-                value={activeChurch.contactEmail}
-                onChange={(e) =>
-                  setActiveChurch({ ...activeChurch, contactEmail: e.target.value })
-                }
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Contact Phone
-              </label>
-              <Input
-                value={activeChurch.contactPhone}
-                onChange={(e) =>
-                  setActiveChurch({ ...activeChurch, contactPhone: e.target.value })
-                }
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Website URL
-              </label>
-              <Input
-                type="url"
-                value={activeChurch.websiteUrl}
-                onChange={(e) =>
-                  setActiveChurch({ ...activeChurch, websiteUrl: e.target.value })
-                }
-              />
-            </div>
-
-            <div className="flex justify-end gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setIsEditing(false)}
-              >
-                Cancel
-              </Button>
-              <Button type="submit">Save Changes</Button>
-            </div>
-          </form>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
