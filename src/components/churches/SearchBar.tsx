@@ -21,3 +21,33 @@ export const SearchBar = ({ value, onChange }: SearchBarProps) => {
     </div>
   );
 };
+<Card className="p-4">
+  <div className="flex flex-col gap-2">
+    <SearchBar
+      value={searchQuery}
+      onChange={setSearchQuery}
+      placeholder="Search by name, location, or phone..."
+    />
+    {/* ADD THE GOOGLE SEARCH FORM HERE */}
+    <form
+      action="https://www.google.com/search"
+      method="get"
+      target="_blank"
+      className="mt-2"
+    >
+      <input
+        type="text"
+        name="q"
+        placeholder="Search Google"
+        className="border rounded p-2 w-full"
+      />
+      <button
+        type="submit"
+        className="bg-blue-500 text-white p-2 rounded mt-2 w-full"
+      >
+        Search Google
+      </button>
+    </form>
+  </div>
+  {/* ... rest of your card content */}
+</Card>
