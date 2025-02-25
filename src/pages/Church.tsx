@@ -1,18 +1,13 @@
-
-
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
-import { Calendar, Heart, MessageCircle, Book } from 'lucide-react'
-
-
-
+} from '@/components/ui/card';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Calendar, Heart, MessageCircle, Book } from 'lucide-react';
 
 interface ChurchServiceTime {
   type: string;
@@ -32,7 +27,6 @@ interface Church {
   websiteUrl: string;
   serviceTimes: ChurchServiceTime[];
 }
-
 
 const CHURCHES = [
   {
@@ -174,7 +168,7 @@ const CHURCHES = [
     id: "10",
     name: "Lake Buena Vista SDA Church",
     address: "11414 S Apopka Vineland Rd, Orlando, FL",
-    description: "A community church in the Lake Buena Vista area of Orlando, welcoming all with open arms.",
+    description: "A community church in the LakeBuena Vista area of Orlando, welcoming all with open arms.",
     missionStatement: "To provide a welcoming spiritual home in the Lake Buena Vista community.",
     location: "Orlando, FL",
     contactEmail: "lakebuenavistacommunity@sda.org",
@@ -337,38 +331,29 @@ const CHURCHES = [
   },
 ] as const;
 
-
 const ChurchPage = () => {
-  const [activeChurch, setActiveChurch] = useState<Church>(CHURCHES[0]);
-  const [activeTab, setActiveTab] = useState("about");
+  const { id } = useParams();
+  const [activeChurch, setActiveChurch] = useState<Church | null>(null);
+  const [activeTab, setActiveTab] = useState('about');
+
+  useEffect(() => {
+    if (id) {
+      const foundChurch = CHURCHES.find((church) => church.id === id);
+      setActiveChurch(foundChurch || null);
+    }
+  }, [id]);
 
   const formatPhoneNumber = (phone: string): string => {
     if (!phone) return '';
     return phone.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
   };
 
-  const handleChurchChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedChurch = CHURCHES.find(church => church.name === e.target.value);
-    if (selectedChurch) {
-      setActiveChurch(selectedChurch);
-    }
-  };
+  if (!activeChurch) {
+    return <p>Church not found.</p>;
+  }
 
   return (
     <div className="container mx-auto p-6 max-w-4xl">
-      {/* Church Selection */}
-      <select 
-        value={activeChurch.name}
-        onChange={handleChurchChange}
-        className="mb-6 w-full rounded-md border p-2 bg-white"
-      >
-        {CHURCHES.map(church => (
-          <option key={church.name} value={church.name}>
-            {church.name}
-          </option>
-        ))}
-      </select>
-
       {/* Main Content */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="w-full bg-white">
@@ -403,8 +388,8 @@ const ChurchPage = () => {
                 <h3 className="text-xl font-semibold text-gray-700">Service Times</h3>
                 <div className="space-y-3">
                   {activeChurch.serviceTimes.map((service, index) => (
-                    <div 
-                      key={index} 
+                    <div
+                      key={index}
                       className="flex justify-between items-center p-3 bg-gray-50 rounded-lg"
                     >
                       <div>
@@ -427,7 +412,7 @@ const ChurchPage = () => {
                   </p>
                   <p className="text-gray-600">
                     <span className="font-medium">Email:</span>{' '}
-                    <a 
+                    <a
                       href={`mailto:${activeChurch.contactEmail}`}
                       className="text-blue-600 hover:underline"
                     >
@@ -436,7 +421,7 @@ const ChurchPage = () => {
                   </p>
                   <p className="text-gray-600">
                     <span className="font-medium">Website:</span>{' '}
-                    <a 
+                    <a
                       href={activeChurch.websiteUrl}
                       className="text-blue-600 hover:underline"
                       target="_blank"
