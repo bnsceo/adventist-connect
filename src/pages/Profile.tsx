@@ -1,5 +1,6 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { ProfileHeader } from "@/components/social/ProfileHeader";
 import { PostCard } from "@/components/social/PostCard";
 import { Card } from "@/components/ui/card";
@@ -15,8 +16,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { ProfileEditForm } from "@/components/social/ProfileEditForm";
+import { supabase } from "@/integrations/supabase/client";
 
-const profileUser: User = {
+const defaultUser: User = {
   id: "1",
   name: "Anderson Paulino",
   role: "Platform Founder",
@@ -24,56 +26,95 @@ const profileUser: User = {
   avatar: "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
   followers: 245,
   following: 188,
-  bio: "As the founder of the Adventist.com app, I'm deeply committed to creating a digital space that strengthens our global Seventh-day Adventist community. My vision was to develop a comprehensive platform that not only connects us through shared faith but also empowers each user with a personalized and secure experience. This app is designed to be more than just a resource; it's a tool for spiritual growth, community engagement, and accessible information. I believe in the power of technology to enhance our connection to God and each other, and I'm dedicated to continuously improving Adventist.com to meet the evolving needs of our worldwide family. \n\n📖 Currently studying the Book of Daniel\n🎵 Worship team leader\n🌱 Mentoring young adults",
+  bio: "As the founder of the Adventist.com app, I'm deeply committed to creating a digital space that strengthens our global Seventh-day Adventist community.",
   location: "Orlando, FL",
   ministries: ["Youth Ministry", "Worship Team", "Bible Study", "Community Outreach"],
   coverImage: "https://images.unsplash.com/photo-1501854140801-50d01698950b"
 };
 
-const userPosts: Post[] = [
-  {
-    id: "1",
-    author: profileUser,
-    content: "Just finished our morning Bible study on the Book of Daniel. So grateful for the meaningful discussions and insights shared by our youth group. Looking forward to next week's session! 📖✨",
-    likes: 15,
-    comments: 3,
-    shares: 1,
-    timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-    hasLiked: true
-  }
-];
-
-const prayerRequests: PrayerRequest[] = [
-  {
-    id: "1",
-    content: "Please pray for our upcoming youth retreat. Praying for God's guidance in planning and that it will be a transformative experience for all attendees.",
-    author: profileUser,
-    timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-    prayerCount: 12,
-    isPrivate: false
-  }
-];
-
-const testimonials: Testimonial[] = [
-  {
-    id: "1",
-    content: "God has been so faithful in guiding our youth ministry. Seeing young people grow in their faith and take leadership roles in the church has been incredibly inspiring.",
-    timestamp: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-    category: "Ministry"
-  }
-];
-
 const Profile = () => {
   const { toast } = useToast();
+  const { userId } = useParams();
   const [activeTab, setActiveTab] = useState("posts");
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [user, setUser] = useState(profileUser);
+  const [user, setUser] = useState<User>(defaultUser);
+  const [isOwnProfile, setIsOwnProfile] = useState(false);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [prayerRequests, setPrayerRequests] = useState<PrayerRequest[]>([]);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const { data: session } = await supabase.auth.getSession();
+        const currentUserId = session?.session?.user?.id;
+        const profileId = userId || currentUserId;
+
+        if (!profileId) {
+          toast({
+            title: "Error",
+            description: "No profile ID provided",
+            variant: "destructive",
+          });
+          return;
+        }
+
+        setIsOwnProfile(currentUserId === profileId);
+
+        const { data: profile, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', profileId)
+          .single();
+
+        if (error) throw error;
+
+        if (profile) {
+          const userData: User = {
+            id: profile.id,
+            name: profile.full_name || "Anonymous",
+            role: profile.church_role || "",
+            church: profile.church_name || "",
+            avatar: profile.avatar_url || "",
+            followers: 0, // You might want to fetch this from a separate table
+            following: 0, // You might want to fetch this from a separate table
+            bio: profile.bio,
+            location: profile.location,
+            ministries: profile.ministry_roles || [],
+          };
+          setUser(userData);
+        }
+
+        // Fetch posts
+        const { data: userPosts, error: postsError } = await supabase
+          .from('posts')
+          .select('*')
+          .eq('user_id', profileId)
+          .order('created_at', { ascending: false });
+
+        if (postsError) throw postsError;
+        setPosts(userPosts || []);
+
+        // You can add similar fetches for prayer requests and testimonials here
+
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load profile",
+          variant: "destructive",
+        });
+      }
+    };
+
+    fetchProfile();
+  }, [userId, toast]);
 
   const handleEditProfile = () => {
     setIsEditDialogOpen(true);
   };
 
-  const handleSaveProfile = (updatedUser: User) => {
+  const handleSaveProfile = async (updatedUser: User) => {
     setUser(updatedUser);
     setIsEditDialogOpen(false);
     toast({
@@ -104,7 +145,7 @@ const Profile = () => {
       <div className="container max-w-4xl py-8">
         <ProfileHeader 
           user={user} 
-          isOwnProfile={true}
+          isOwnProfile={isOwnProfile}
           onEditProfile={handleEditProfile}
         />
 
@@ -146,7 +187,7 @@ const Profile = () => {
           </TabsList>
 
           <TabsContent value="posts" className="space-y-4">
-            {userPosts.map((post) => (
+            {posts.map((post) => (
               <PostCard
                 key={post.id}
                 post={post}
