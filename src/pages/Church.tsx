@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MessageCircle, Book, Heart, Edit2, Upload } from "lucide-react";
@@ -10,50 +10,59 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { supabase } from "@/integrations/supabase/client";
-import { useRouter } from "next/router"; // Import useRouter
+import { useRouter } from "next/router";
 
 const ChurchPage = () => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("about");
   const [isEditing, setIsEditing] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [church, setChurch] = useState<Church>({
-    id: "1",
-    name: "Central Adventist Church",
-    description: "A welcoming community of believers in the heart of the city.",
-    missionStatement: "To share God's love and spread the gospel to all nations.",
-    location: "123 Faith Street, Cityville",
-    contactEmail: "info@centraladventist.org",
-    contactPhone: "(555) 123-4567",
-    websiteUrl: "https://centraladventist.org",
-    serviceTimes: [
-      { day: "Saturday", time: "9:30 AM", type: "Sabbath School" },
-      { day: "Saturday", time: "11:00 AM", type: "Worship Service" },
-      { day: "Wednesday", time: "7:00 PM", type: "Prayer Meeting" },
-    ],
-    adminUserId: "1",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    bannerImage: "",
-    logoImage: "",
-  });
+  const [church, setChurch] = useState<Church | null>(null); // Initialize as null
+  const router = useRouter();
+  const { churchId } = router.query;
 
-  const router = useRouter(); // Initialize useRouter
-  const { churchId } = router.query; // Get churchId from query params
+  useEffect(() => {
+    const fetchChurch = async (id: string) => {
+      try {
+        const { data, error } = await supabase
+          .from("churches")
+          .select("*")
+          .eq("id", id)
+          .single();
 
-  // Fetch church data based on churchId (replace with your data fetching logic)
-  // Example using useEffect (assuming you have a fetchChurch function):
-  // useEffect(() => {
-  //   if (churchId) {
-  //     fetchChurch(churchId).then(data => setChurch(data));
-  //   }
-  // }, [churchId]);
+        if (error) {
+          throw error;
+        }
+
+        if (data) {
+          setChurch(data as Church);
+        } else {
+          // Handle case where church with given ID is not found.
+          console.error(`Church with ID ${id} not found.`);
+          // Optionally redirect or show an error message to the user.
+          router.push('/churches'); // Example: redirect to churches list
+        }
+      } catch (err) {
+        console.error("Error fetching church:", err);
+        // Handle error (e.g., show error message to user).
+      }
+    };
+
+    if (churchId && typeof churchId === "string") {
+      fetchChurch(churchId);
+    }
+  }, [churchId, router]);
+
+  if (!church) {
+    return <div>Loading...</div>; // Or a loading spinner
+  }
 
   const handleFileUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
     type: "banner" | "logo"
   ) => {
-    const file = e.target.files?.[0];
+    // ... (rest of handleFileUpload function)
+        const file = e.target.files?.[0];
     if (!file) return;
     setIsUploading(true);
     try {
@@ -117,6 +126,7 @@ const ChurchPage = () => {
       });
     }
   };
+
   return (
     <TooltipProvider>
       <div className="min-h-screen bg-gray-50">
@@ -211,7 +221,8 @@ const ChurchPage = () => {
                   </label>
                   <Input
                     value={church.name}
-                    onChange={(e) => setChurch({ ...church, name: e.target.value })
+                    onChange={(e) =>
+                      setChurch({ ...church, name: e.target.value })
                     }
                     required
                   />
