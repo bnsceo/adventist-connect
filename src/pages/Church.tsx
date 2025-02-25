@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Calendar, Heart, MessageCircle, Book } from 'lucide-react';
+import { Calendar, Heart, MessageCircle, Book, Users } from 'lucide-react';
 
 interface ChurchServiceTime {
   type: string;
@@ -26,6 +26,8 @@ interface Church {
   contactPhone: string;
   websiteUrl: string;
   serviceTimes: ChurchServiceTime[];
+  // New optional field with additional programs/ministries info from the church website:
+  programs?: string;
 }
 
 const CHURCHES = [
@@ -33,8 +35,10 @@ const CHURCHES = [
     id: "1",
     name: "Bethel French SDA Church",
     address: "5431 S Rio Grande Ave, Orlando, FL",
-    description: "A vibrant French-speaking Seventh-day Adventist community in Orlando.",
-    missionStatement: "To serve and share the love of Christ with our community.",
+    description:
+      "A vibrant French-speaking Seventh-day Adventist community in Orlando. Our updated website now highlights our weekly Bible study sessions, youth programs, and community outreach initiatives.",
+    missionStatement:
+      "To serve and share the love of Christ with our community through culturally relevant worship and ministry.",
     location: "Orlando, FL",
     contactEmail: "bethelfrench@sda.org",
     contactPhone: "(555) 123-4567",
@@ -43,13 +47,17 @@ const CHURCHES = [
       { type: "Sabbath School", day: "Saturday", time: "9:30 AM" },
       { type: "Worship Service", day: "Saturday", time: "11:00 AM" },
     ],
+    programs:
+      "In addition to our regular services, we offer weekly Bible study sessions, youth fellowship, and various community outreach programs. Visit our website for the full schedule.",
   },
   {
     id: "2",
     name: "MT Sinai Seventh Day Adventist Church",
     address: "2610 Orange Center Blvd, Orlando, FL",
-    description: "A community focused on spreading the love of Christ.",
-    missionStatement: "To uplift and serve our community through faith and fellowship.",
+    description:
+      "A community focused on spreading the love of Christ with dynamic worship and a commitment to community service.",
+    missionStatement:
+      "To uplift and serve our community through faith, interactive Bible studies, and compassionate outreach.",
     location: "Orlando, FL",
     contactEmail: "mtsinai@sda.org",
     contactPhone: "(407) 298-7877",
@@ -58,13 +66,17 @@ const CHURCHES = [
       { type: "Sabbath School", day: "Saturday", time: "9:00 AM" },
       { type: "Worship Service", day: "Saturday", time: "10:30 AM" },
     ],
+    programs:
+      "Our church hosts engaging worship sessions, in-depth Bible studies, and community service projects throughout the week. Check our website for upcoming programs.",
   },
   {
     id: "3",
     name: "University Seventh-Day Adventist Church",
     address: "9191 University Blvd, Orlando, FL",
-    description: "A church integrated with educational and administrative ministries.",
-    missionStatement: "To educate, serve, and inspire through the love of God.",
+    description:
+      "A church integrated with educational and administrative ministries.",
+    missionStatement:
+      "To educate, serve, and inspire through the love of God.",
     location: "Orlando, FL",
     contactEmail: "universitychurch@sda.org",
     contactPhone: "(407) 657-4696",
@@ -78,8 +90,10 @@ const CHURCHES = [
     id: "4",
     name: "Seventh-day Adventist Church Orlando",
     address: "30 E Evans St, Orlando, FL",
-    description: "A traditional SDA church serving its community with faith and dedication.",
-    missionStatement: "To spread the gospel and serve our community with love and compassion.",
+    description:
+      "A traditional SDA church serving its community with faith and dedication.",
+    missionStatement:
+      "To spread the gospel and serve our community with love and compassion.",
     location: "Orlando, FL",
     contactEmail: "orlandochurch@sda.org",
     contactPhone: "(407) 894-6213",
@@ -93,8 +107,10 @@ const CHURCHES = [
     id: "5",
     name: "Vietnamese Seventh Day Adventist Church",
     address: "4417 N Powers Dr, Orlando, FL",
-    description: "A church serving the Vietnamese community in Orlando with faith and cultural connection.",
-    missionStatement: "To nurture faith and community among Vietnamese believers in Orlando.",
+    description:
+      "A church serving the Vietnamese community in Orlando with faith and cultural connection.",
+    missionStatement:
+      "To nurture faith and community among Vietnamese believers in Orlando.",
     location: "Orlando, FL",
     contactEmail: "vietnamese@sda.org",
     contactPhone: "(407) 298-1119",
@@ -108,8 +124,10 @@ const CHURCHES = [
     id: "6",
     name: "Guilgal Seventh Day Adventist Church",
     address: "2909 N Pine Hills Rd, Orlando, FL",
-    description: "A vibrant church community in Orlando, fostering spiritual growth and fellowship.",
-    missionStatement: "To be a beacon of hope and love in the Pine Hills community.",
+    description:
+      "A vibrant church community in Orlando, fostering spiritual growth and fellowship.",
+    missionStatement:
+      "To be a beacon of hope and love in the Pine Hills community.",
     location: "Orlando, FL",
     contactEmail: "guilgal@sda.org",
     contactPhone: "(407) 578-1488",
@@ -123,8 +141,10 @@ const CHURCHES = [
     id: "7",
     name: "Lake Buena Vista Spanish SDA Church",
     address: "3979 S Orange Blossom Trl, Orlando, FL",
-    description: "A Spanish-speaking Seventh-day Adventist church in Orlando, serving the Hispanic community.",
-    missionStatement: "To spread the gospel in Spanish and serve our community with cultural sensitivity.",
+    description:
+      "A Spanish-speaking Seventh-day Adventist church in Orlando, serving the Hispanic community.",
+    missionStatement:
+      "To spread the gospel in Spanish and serve our community with cultural sensitivity.",
     location: "Orlando, FL",
     contactEmail: "lakebuenavista@sda.org",
     contactPhone: "(407) 704-3068",
@@ -138,8 +158,10 @@ const CHURCHES = [
     id: "8",
     name: "Beracah Seventh Day Adventist Church",
     address: "6330 Moore St, Orlando, FL",
-    description: "A dedicated SDA congregation in Orlando, committed to spiritual growth and community service.",
-    missionStatement: "To nurture faith and serve our community with dedication and love.",
+    description:
+      "A dedicated SDA congregation in Orlando, committed to spiritual growth and community service.",
+    missionStatement:
+      "To nurture faith and serve our community with dedication and love.",
     location: "Orlando, FL",
     contactEmail: "beracah@sda.org",
     contactPhone: "(407) 295-6035",
@@ -153,8 +175,10 @@ const CHURCHES = [
     id: "9",
     name: "Pine Hills Seventh Day Adventist Church",
     address: "4955 Rose Ave, Orlando, FL",
-    description: "Located in the Pine Hills community of Orlando, serving with faith and community spirit.",
-    missionStatement: "To be a spiritual home and community resource in Pine Hills.",
+    description:
+      "Located in the Pine Hills community of Orlando, serving with faith and community spirit.",
+    missionStatement:
+      "To be a spiritual home and community resource in Pine Hills.",
     location: "Orlando, FL",
     contactEmail: "pinehills@sda.org",
     contactPhone: "(407) 523-3486",
@@ -168,8 +192,10 @@ const CHURCHES = [
     id: "10",
     name: "Lake Buena Vista SDA Church",
     address: "11414 S Apopka Vineland Rd, Orlando, FL",
-    description: "A community church in the LakeBuena Vista area of Orlando, welcoming all with open arms.",
-    missionStatement: "To provide a welcoming spiritual home in the Lake Buena Vista community.",
+    description:
+      "A community church in the Lake Buena Vista area of Orlando, welcoming all with open arms.",
+    missionStatement:
+      "To provide a welcoming spiritual home in the Lake Buena Vista community.",
     location: "Orlando, FL",
     contactEmail: "lakebuenavistacommunity@sda.org",
     contactPhone: "(407) 791-6266",
@@ -183,8 +209,10 @@ const CHURCHES = [
     id: "11",
     name: "Bethel Seventh-Day Adventist Church",
     address: "2809 ForestCity Tr, Orlando, FL",
-    description: "Serving the community with faith and fellowship, fostering a sense of belonging.",
-    missionStatement: "To foster a community of faith and fellowship in Orlando.",
+    description:
+      "Serving the community with faith and fellowship, fostering a sense of belonging.",
+    missionStatement:
+      "To foster a community of faith and fellowship in Orlando.",
     location: "Orlando, FL",
     contactEmail: "bethelcommunity@sda.org",
     contactPhone: "(407) 293-4850",
@@ -198,8 +226,10 @@ const CHURCHES = [
     id: "12",
     name: "Filipino-American Seventh Day Adventist Church",
     address: "1425 Davidson St, Orlando, FL",
-    description: "A culturally rich SDA church serving the Filipino community in Orlando.",
-    missionStatement: "To unite and serve the Filipino-American community through faith.",
+    description:
+      "A culturally rich SDA church serving the Filipino community in Orlando.",
+    missionStatement:
+      "To unite and serve the Filipino-American community through faith.",
     location: "Orlando, FL",
     contactEmail: "filipinoamerican@sda.org",
     contactPhone: "(407) 422-5747",
@@ -213,8 +243,10 @@ const CHURCHES = [
     id: "13",
     name: "Brazilian Community Church",
     address: "7528 Universal Blvd, Orlando, FL",
-    description: "A vibrant church with a strong Brazilian community in Orlando, celebrating faith and culture.",
-    missionStatement: "To celebrate our Brazilian heritage and faith in Orlando.",
+    description:
+      "A vibrant church with a strong Brazilian community in Orlando, celebrating faith and culture.",
+    missionStatement:
+      "To celebrate our Brazilian heritage and faith in Orlando.",
     location: "Orlando, FL",
     contactEmail: "braziliancommunity@sda.org",
     contactPhone: "(407) 903-9053",
@@ -228,8 +260,10 @@ const CHURCHES = [
     id: "14",
     name: "Beraca 1 Church",
     address: "1517 Mercy Dr, Orlando, FL",
-    description: "A dedicated SDA church fostering spiritual growth and community connection.",
-    missionStatement: "To foster spiritual growth and community in Orlando.",
+    description:
+      "A dedicated SDA church fostering spiritual growth and community connection.",
+    missionStatement:
+      "To foster spiritual growth and community in Orlando.",
     location: "Orlando, FL",
     contactEmail: "beraca1@sda.org",
     contactPhone: "(407) 704-7967",
@@ -243,8 +277,10 @@ const CHURCHES = [
     id: "15",
     name: "Pine Hills Seventh Day Adventist Church Center",
     address: "4955 Rose Ave, Orlando, FL",
-    description: "Another branch of the Pine Hills SDA community, focusing on community outreach and service.",
-    missionStatement: "To serve and uplift the Pine Hills community.",
+    description:
+      "Another branch of the Pine Hills SDA community, focusing on community outreach and service.",
+    missionStatement:
+      "To serve and uplift the Pine Hills community.",
     location: "Orlando, FL",
     contactEmail: "pinehillscommunity@sda.org",
     contactPhone: "(407) 291-4816",
@@ -258,8 +294,10 @@ const CHURCHES = [
     id: "16",
     name: "Emmanuel Church of 7th Day Adventists",
     address: "6424 Arundel Dr, Orlando, FL",
-    description: "A church dedicated to spreading the Gospel and serving the community in Orlando.",
-    missionStatement: "To spread the Gospel and serve our community with love.",
+    description:
+      "A church dedicated to spreading the Gospel and serving the community in Orlando.",
+    missionStatement:
+      "To spread the Gospel and serve our community with love.",
     location: "Orlando, FL",
     contactEmail: "emmanuel@sda.org",
     contactPhone: "(407) 299-9483",
@@ -273,8 +311,10 @@ const CHURCHES = [
     id: "17",
     name: "South Orlando Seventh Day Adventist Church",
     address: "1112 W Oak Ridge Rd, Orlando, FL",
-    description: "Serving the South Orlando community with faith, unity, and a welcoming spirit.",
-    missionStatement: "To serve the South Orlando community with faith and unity.",
+    description:
+      "Serving the South Orlando community with faith, unity, and a welcoming spirit.",
+    missionStatement:
+      "To serve the South Orlando community with faith and unity.",
     location: "Orlando, FL",
     contactEmail: "southorlando@sda.org",
     contactPhone: "(407) 855-8722",
@@ -288,8 +328,10 @@ const CHURCHES = [
     id: "18",
     name: "Emmanuel Seventh Day Adventist Church",
     address: "6350 Arundel Dr, Orlando, FL",
-    description: "A church committed to community and spiritual growth in the heart of Orlando.",
-    missionStatement: "To foster community and spiritual growth in Orlando.",
+    description:
+      "A church committed to community and spiritual growth in the heart of Orlando.",
+    missionStatement:
+      "To foster community and spiritual growth in Orlando.",
     location: "Orlando, FL",
     contactEmail: "emmanuelcommunity@sda.org",
     contactPhone: "(407) 704-7905",
@@ -303,8 +345,10 @@ const CHURCHES = [
     id: "19",
     name: "Beryl Wisdom Seven Day Adventists School",
     address: "4955 Rose Ave, Orlando, FL",
-    description: "A church focused on educating and nurturing future generations with faith and wisdom.",
-    missionStatement: "To educate and nurture future generations with faith and wisdom.",
+    description:
+      "A church focused on educating and nurturing future generations with faith and wisdom.",
+    missionStatement:
+      "To educate and nurture future generations with faith and wisdom.",
     location: "Orlando, FL",
     contactEmail: "berylwisdom@sda.org",
     contactPhone: "(407) 291-3073",
@@ -318,8 +362,10 @@ const CHURCHES = [
     id: "20",
     name: "Pine Hills Seventh Day Adventist Community Center",
     address: "4955 Rose Ave, Orlando, FL",
-    description: "A community center fostering fellowship, spiritual growth, and outreach in Pine Hills.",
-    missionStatement: "To foster fellowship and spiritual growth in the Pine Hills community.",
+    description:
+      "A community center fostering fellowship, spiritual growth, and outreach in Pine Hills.",
+    missionStatement:
+      "To foster fellowship and spiritual growth in the Pine Hills community.",
     location: "Orlando, FL",
     contactEmail: "pinehillscommunitycenter@sda.org",
     contactPhone: "(407) 299-8704",
@@ -354,7 +400,6 @@ const ChurchPage = () => {
 
   return (
     <div className="container mx-auto p-6 max-w-4xl">
-      {/* Main Content */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="w-full bg-white">
           <TabsTrigger value="about" className="flex items-center gap-2">
@@ -369,15 +414,22 @@ const ChurchPage = () => {
             <MessageCircle className="w-4 h-4" />
             Announcements
           </TabsTrigger>
+          <TabsTrigger value="programs" className="flex items-center gap-2">
+            <Users className="w-4 h-4" />
+            Programs
+          </TabsTrigger>
         </TabsList>
 
+        {/* About Tab */}
         <TabsContent value="about">
           <Card className="mt-4">
             <CardHeader>
-              <CardTitle className="text-3xl font-bold">{activeChurch.name}</CardTitle>
+              <CardTitle className="text-3xl font-bold">
+                {activeChurch.name}
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Address Section */}
+              {/* Location Section */}
               <div className="space-y-2">
                 <h3 className="text-xl font-semibold text-gray-700">Location</h3>
                 <p className="text-gray-600">{activeChurch.address}</p>
@@ -466,7 +518,7 @@ const ChurchPage = () => {
                   Upcoming Events
                 </h3>
                 <p className="text-gray-500">
-                  Check back soon for upcoming church events and activities.
+                  Visit our website or check back soon for updated event details.
                 </p>
               </div>
             </CardContent>
@@ -483,9 +535,37 @@ const ChurchPage = () => {
                   Church Announcements
                 </h3>
                 <p className="text-gray-500">
-                  Check back soon for important church announcements.
+                  Check our website regularly for the latest announcements.
                 </p>
               </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Programs Tab */}
+        <TabsContent value="programs">
+          <Card className="mt-4">
+            <CardContent className="pt-6">
+              {activeChurch.programs ? (
+                <div className="space-y-4">
+                  <h3 className="text-xl font-semibold text-gray-700">
+                    Ministries &amp; Programs
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {activeChurch.programs}
+                  </p>
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <Users className="mx-auto mb-4 w-12 h-12 text-gray-400" />
+                  <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                    Additional Programs
+                  </h3>
+                  <p className="text-gray-500">
+                    For more details on our ministries and community programs, please visit our website.
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
