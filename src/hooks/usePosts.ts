@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Post } from "@/types/social";
 import { supabase } from "@/integrations/supabase/client";
@@ -33,7 +32,7 @@ export const usePosts = () => {
           id: post.id,
           content: post.content,
           timestamp: post.created_at,
-          images: Array.isArray(post.attachment_urls) ? post.attachment_urls : [],
+          images: Array.isArray(post.attachment_urls) ? post.attachment_urls.filter((url): url is string => typeof url === 'string') : [], // Filter to keep only strings
           likes: post.like_count || 0,
           comments: 0,
           shares: 0,
@@ -92,7 +91,7 @@ export const usePosts = () => {
           id: post.id,
           content: post.content,
           timestamp: post.created_at,
-          images: Array.isArray(post.attachment_urls) ? post.attachment_urls : [],
+          images: Array.isArray(post.attachment_urls) ? post.attachment_urls.filter((url): url is string => typeof url === 'string') : [], // Filter to keep only strings
           likes: 0,
           comments: 0,
           shares: 0,
