@@ -10,6 +10,7 @@ interface ChurchCardProps {
 
 export const ChurchCard = ({ church }: ChurchCardProps) => {
   const navigate = useNavigate();
+  console.log(church.id);
 
   return (
     <Card 
