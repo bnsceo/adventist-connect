@@ -7,6 +7,9 @@ import { ChurchCard } from "@/components/churches/ChurchCard";
 import { Church } from "@/types/social";
 
 // SearchBar component implementation
+
+<iframe src="https://www.google.com/webhp?igu=1&sourceid=chrome-instant&ion=1#q=your+search+query" style="width: 400px; height: 100px;"></iframe>
+//testing 
 const SearchBar = ({
   value,
   onChange,
