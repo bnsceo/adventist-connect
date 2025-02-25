@@ -34,9 +34,9 @@ interface Church {
 }
 
 
-
 const CHURCHES = [
   {
+    id: "1",
     name: "Bethel French SDA Church",
     address: "5431 S Rio Grande Ave, Orlando, FL",
     description: "A vibrant French-speaking Seventh-day Adventist community in Orlando.",
@@ -51,6 +51,7 @@ const CHURCHES = [
     ],
   },
   {
+    id: "2",
     name: "MT Sinai Seventh Day Adventist Church",
     address: "2610 Orange Center Blvd, Orlando, FL",
     description: "A community focused on spreading the love of Christ.",
@@ -65,6 +66,7 @@ const CHURCHES = [
     ],
   },
   {
+    id: "3",
     name: "University Seventh-Day Adventist Church",
     address: "9191 University Blvd, Orlando, FL",
     description: "A church integrated with educational and administrative ministries.",
@@ -79,6 +81,7 @@ const CHURCHES = [
     ],
   },
   {
+    id: "4",
     name: "Seventh-day Adventist Church Orlando",
     address: "30 E Evans St, Orlando, FL",
     description: "A traditional SDA church serving its community with faith and dedication.",
@@ -93,6 +96,7 @@ const CHURCHES = [
     ],
   },
   {
+    id: "5",
     name: "Vietnamese Seventh Day Adventist Church",
     address: "4417 N Powers Dr, Orlando, FL",
     description: "A church serving the Vietnamese community in Orlando with faith and cultural connection.",
@@ -107,6 +111,7 @@ const CHURCHES = [
     ],
   },
   {
+    id: "6",
     name: "Guilgal Seventh Day Adventist Church",
     address: "2909 N Pine Hills Rd, Orlando, FL",
     description: "A vibrant church community in Orlando, fostering spiritual growth and fellowship.",
@@ -121,6 +126,7 @@ const CHURCHES = [
     ],
   },
   {
+    id: "7",
     name: "Lake Buena Vista Spanish SDA Church",
     address: "3979 S Orange Blossom Trl, Orlando, FL",
     description: "A Spanish-speaking Seventh-day Adventist church in Orlando, serving the Hispanic community.",
@@ -135,6 +141,7 @@ const CHURCHES = [
     ],
   },
   {
+    id: "8",
     name: "Beracah Seventh Day Adventist Church",
     address: "6330 Moore St, Orlando, FL",
     description: "A dedicated SDA congregation in Orlando, committed to spiritual growth and community service.",
@@ -149,6 +156,7 @@ const CHURCHES = [
     ],
   },
   {
+    id: "9",
     name: "Pine Hills Seventh Day Adventist Church",
     address: "4955 Rose Ave, Orlando, FL",
     description: "Located in the Pine Hills community of Orlando, serving with faith and community spirit.",
@@ -163,6 +171,7 @@ const CHURCHES = [
     ],
   },
   {
+    id: "10",
     name: "Lake Buena Vista SDA Church",
     address: "11414 S Apopka Vineland Rd, Orlando, FL",
     description: "A community church in the Lake Buena Vista area of Orlando, welcoming all with open arms.",
@@ -177,8 +186,9 @@ const CHURCHES = [
     ],
   },
   {
+    id: "11",
     name: "Bethel Seventh-Day Adventist Church",
-    address: "2809 Forest City Tr, Orlando, FL",
+    address: "2809 ForestCity Tr, Orlando, FL",
     description: "Serving the community with faith and fellowship, fostering a sense of belonging.",
     missionStatement: "To foster a community of faith and fellowship in Orlando.",
     location: "Orlando, FL",
@@ -191,6 +201,7 @@ const CHURCHES = [
     ],
   },
   {
+    id: "12",
     name: "Filipino-American Seventh Day Adventist Church",
     address: "1425 Davidson St, Orlando, FL",
     description: "A culturally rich SDA church serving the Filipino community in Orlando.",
@@ -205,6 +216,7 @@ const CHURCHES = [
     ],
   },
   {
+    id: "13",
     name: "Brazilian Community Church",
     address: "7528 Universal Blvd, Orlando, FL",
     description: "A vibrant church with a strong Brazilian community in Orlando, celebrating faith and culture.",
@@ -219,6 +231,7 @@ const CHURCHES = [
     ],
   },
   {
+    id: "14",
     name: "Beraca 1 Church",
     address: "1517 Mercy Dr, Orlando, FL",
     description: "A dedicated SDA church fostering spiritual growth and community connection.",
@@ -233,6 +246,7 @@ const CHURCHES = [
     ],
   },
   {
+    id: "15",
     name: "Pine Hills Seventh Day Adventist Church Center",
     address: "4955 Rose Ave, Orlando, FL",
     description: "Another branch of the Pine Hills SDA community, focusing on community outreach and service.",
@@ -247,6 +261,7 @@ const CHURCHES = [
     ],
   },
   {
+    id: "16",
     name: "Emmanuel Church of 7th Day Adventists",
     address: "6424 Arundel Dr, Orlando, FL",
     description: "A church dedicated to spreading the Gospel and serving the community in Orlando.",
@@ -261,6 +276,7 @@ const CHURCHES = [
     ],
   },
   {
+    id: "17",
     name: "South Orlando Seventh Day Adventist Church",
     address: "1112 W Oak Ridge Rd, Orlando, FL",
     description: "Serving the South Orlando community with faith, unity, and a welcoming spirit.",
@@ -275,6 +291,7 @@ const CHURCHES = [
     ],
   },
   {
+    id: "18",
     name: "Emmanuel Seventh Day Adventist Church",
     address: "6350 Arundel Dr, Orlando, FL",
     description: "A church committed to community and spiritual growth in the heart of Orlando.",
@@ -289,6 +306,7 @@ const CHURCHES = [
     ],
   },
   {
+    id: "19",
     name: "Beryl Wisdom Seven Day Adventists School",
     address: "4955 Rose Ave, Orlando, FL",
     description: "A church focused on educating and nurturing future generations with faith and wisdom.",
@@ -303,6 +321,7 @@ const CHURCHES = [
     ],
   },
   {
+    id: "20",
     name: "Pine Hills Seventh Day Adventist Community Center",
     address: "4955 Rose Ave, Orlando, FL",
     description: "A community center fostering fellowship, spiritual growth, and outreach in Pine Hills.",
@@ -317,8 +336,6 @@ const CHURCHES = [
     ],
   },
 ] as const;
-
-
 
 
 const ChurchPage = () => {
