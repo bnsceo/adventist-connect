@@ -28,6 +28,13 @@ export const usePosts = () => {
 
       if (error) throw error;
 
+      // Get user stats
+      const { data: userStats } = await supabase
+        .from('profile_stats')
+        .select('*');
+
+      const statsMap = new Map(userStats?.map(stat => [stat.id, stat]));
+
       if (postsData) {
         const formattedPosts: Post[] = postsData.map(post => ({
           id: post.id,
@@ -48,8 +55,8 @@ export const usePosts = () => {
             role: post.profiles.church_role || "",
             church: post.profiles.church_name || "",
             avatar: post.profiles.avatar_url || "",
-            followers: 0,
-            following: 0
+            followers: statsMap.get(post.profiles.id)?.followers_count || 0,
+            following: statsMap.get(post.profiles.id)?.following_count || 0
           }
         }));
         setPosts(formattedPosts);
@@ -66,7 +73,7 @@ export const usePosts = () => {
     }
   };
 
-  const createPost = async (content: string, userId: string) => {
+  const createPost = async (content: string, userId: string, attachments: string[] = []) => {
     try {
       const { data: post, error } = await supabase
         .from('posts')
@@ -75,6 +82,7 @@ export const usePosts = () => {
             user_id: userId,
             content,
             title: content.slice(0, 50),
+            attachment_urls: attachments
           }
         ])
         .select(`

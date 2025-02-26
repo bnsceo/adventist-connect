@@ -24,6 +24,12 @@ const Index = () => {
         .eq('id', session.session.user.id)
         .single();
 
+      const { data: stats } = await supabase
+        .from('profile_stats')
+        .select('*')
+        .eq('id', session.session.user.id)
+        .single();
+
       if (profile) {
         setCurrentUser({
           id: profile.id,
@@ -31,8 +37,8 @@ const Index = () => {
           role: profile.church_role || "",
           church: profile.church_name || "",
           avatar: profile.avatar_url || "",
-          followers: 0,
-          following: 0,
+          followers: stats?.followers_count || 0,
+          following: stats?.following_count || 0,
           bio: profile.bio,
           location: profile.location,
           ministries: profile.ministry_roles || [],
@@ -43,11 +49,11 @@ const Index = () => {
     fetchCurrentUser();
   }, []);
 
-  const handleCreatePost = async (content: string) => {
+  const handleCreatePost = async (content: string, attachments?: string[]) => {
     if (!currentUser) return;
 
     try {
-      const success = await createPost(content, currentUser.id);
+      const success = await createPost(content, currentUser.id, attachments);
       if (success) {
         toast({
           title: "Post created",
