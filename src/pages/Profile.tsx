@@ -12,12 +12,11 @@ import { supabase } from "@/integrations/supabase/client";
 const Profile = () => {
   const { toast } = useToast();
   const { userId } = useParams();
-  const { user, isOwnProfile, posts, isLoading, refetchProfile } = useProfile(userId);
+  const { user, isOwnProfile, posts, isLoading, isFollowing, refetchProfile } = useProfile(userId);
   const [activeTab, setActiveTab] = useState("posts");
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [prayerRequests] = useState<PrayerRequest[]>([]);
   const [testimonials] = useState<Testimonial[]>([]);
-  const [isFollowing, setIsFollowing] = useState(false);
   const [isUpdatingFollow, setIsUpdatingFollow] = useState(false);
 
   const handleEditProfile = () => {
@@ -58,7 +57,6 @@ const Profile = () => {
           ]);
       }
 
-      setIsFollowing(!isFollowing);
       await refetchProfile();
       
       toast({
