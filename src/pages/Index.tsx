@@ -24,9 +24,9 @@ const Index = () => {
         .eq('id', session.session.user.id)
         .single();
 
+      // Get profile stats using RPC function
       const { data: stats } = await supabase
-        .from('profile_stats')
-        .select('*')
+        .rpc('get_profile_stats')
         .eq('id', session.session.user.id)
         .single();
 

@@ -4,6 +4,12 @@ import { Post } from "@/types/social";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 
+interface ProfileStats {
+  id: string;
+  followers_count: number;
+  following_count: number;
+}
+
 export const usePosts = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -12,6 +18,8 @@ export const usePosts = () => {
   const fetchPosts = async () => {
     try {
       setIsLoading(true);
+      
+      // First fetch posts with profiles
       const { data: postsData, error } = await supabase
         .from('posts')
         .select(`
@@ -28,39 +36,52 @@ export const usePosts = () => {
 
       if (error) throw error;
 
-      // Get user stats
-      const { data: userStats } = await supabase
-        .from('profile_stats')
-        .select('*');
+      if (!postsData) return;
 
-      const statsMap = new Map(userStats?.map(stat => [stat.id, stat]));
+      // Get user profile stats using a separate function
+      const { data: statsData, error: statsError } = await supabase
+        .rpc('get_profile_stats');
 
-      if (postsData) {
-        const formattedPosts: Post[] = postsData.map(post => ({
-          id: post.id,
-          content: post.content,
-          timestamp: post.created_at,
-          images: post.attachment_urls ? 
-            (Array.isArray(post.attachment_urls) ? 
-              post.attachment_urls.filter((url): url is string => typeof url === 'string') : 
-              []
-            ) : [],
-          likes: post.like_count || 0,
-          comments: 0,
-          shares: 0,
-          hasLiked: false,
-          author: {
-            id: post.profiles.id,
-            name: post.profiles.full_name || "Anonymous",
-            role: post.profiles.church_role || "",
-            church: post.profiles.church_name || "",
-            avatar: post.profiles.avatar_url || "",
-            followers: statsMap.get(post.profiles.id)?.followers_count || 0,
-            following: statsMap.get(post.profiles.id)?.following_count || 0
-          }
-        }));
-        setPosts(formattedPosts);
+      if (statsError) {
+        console.error('Error fetching profile stats:', statsError);
       }
+
+      const statsMap = new Map<string, { followers_count: number; following_count: number }>();
+      
+      if (statsData) {
+        statsData.forEach((stat: ProfileStats) => {
+          statsMap.set(stat.id, {
+            followers_count: stat.followers_count,
+            following_count: stat.following_count
+          });
+        });
+      }
+
+      const formattedPosts: Post[] = postsData.map(post => ({
+        id: post.id,
+        content: post.content,
+        timestamp: post.created_at,
+        images: post.attachment_urls ? 
+          (Array.isArray(post.attachment_urls) ? 
+            post.attachment_urls.filter((url): url is string => typeof url === 'string') : 
+            []
+          ) : [],
+        likes: post.like_count || 0,
+        comments: 0,
+        shares: 0,
+        hasLiked: false,
+        author: {
+          id: post.profiles.id,
+          name: post.profiles.full_name || "Anonymous",
+          role: post.profiles.church_role || "",
+          church: post.profiles.church_name || "",
+          avatar: post.profiles.avatar_url || "",
+          followers: statsMap.get(post.profiles.id)?.followers_count || 0,
+          following: statsMap.get(post.profiles.id)?.following_count || 0
+        }
+      }));
+
+      setPosts(formattedPosts);
     } catch (error) {
       console.error('Error fetching posts:', error);
       toast({
