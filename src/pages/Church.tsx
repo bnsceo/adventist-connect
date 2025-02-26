@@ -26,11 +26,10 @@ interface Church {
   contactPhone: string;
   websiteUrl: string;
   serviceTimes: ChurchServiceTime[];
-  // New optional field with additional programs/ministries info from the church website:
   programs?: string;
 }
 
-const CHURCHES = [
+const CHURCHES: Church[] = [
   {
     id: "1",
     name: "Bethel French SDA Church",
@@ -375,7 +374,7 @@ const CHURCHES = [
       { type: "Worship Service", day: "Saturday", time: "11:00 AM" },
     ],
   },
-] as const;
+] as Church[];
 
 const ChurchPage = () => {
   const { id } = useParams();
@@ -385,7 +384,14 @@ const ChurchPage = () => {
   useEffect(() => {
     if (id) {
       const foundChurch = CHURCHES.find((church) => church.id === id);
-      setActiveChurch(foundChurch || null);
+      if (foundChurch) {
+        setActiveChurch({
+          ...foundChurch,
+          serviceTimes: [...foundChurch.serviceTimes]
+        });
+      } else {
+        setActiveChurch(null);
+      }
     }
   }, [id]);
 
@@ -420,7 +426,6 @@ const ChurchPage = () => {
           </TabsTrigger>
         </TabsList>
 
-        {/* About Tab */}
         <TabsContent value="about">
           <Card className="mt-4">
             <CardHeader>
@@ -429,13 +434,11 @@ const ChurchPage = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Location Section */}
               <div className="space-y-2">
                 <h3 className="text-xl font-semibold text-gray-700">Location</h3>
                 <p className="text-gray-600">{activeChurch.address}</p>
               </div>
 
-              {/* Service Times Section */}
               <div className="space-y-2">
                 <h3 className="text-xl font-semibold text-gray-700">Service Times</h3>
                 <div className="space-y-3">
@@ -454,7 +457,6 @@ const ChurchPage = () => {
                 </div>
               </div>
 
-              {/* Contact Information */}
               <div className="space-y-2">
                 <h3 className="text-xl font-semibold text-gray-700">Contact Information</h3>
                 <div className="space-y-3">
@@ -485,7 +487,6 @@ const ChurchPage = () => {
                 </div>
               </div>
 
-              {/* Description */}
               {activeChurch.description && (
                 <div className="space-y-2">
                   <h3 className="text-xl font-semibold text-gray-700">About Us</h3>
@@ -495,7 +496,6 @@ const ChurchPage = () => {
                 </div>
               )}
 
-              {/* Mission Statement */}
               {activeChurch.missionStatement && (
                 <div className="space-y-2">
                   <h3 className="text-xl font-semibold text-gray-700">Mission Statement</h3>
@@ -508,7 +508,6 @@ const ChurchPage = () => {
           </Card>
         </TabsContent>
 
-        {/* Events Tab */}
         <TabsContent value="events">
           <Card className="mt-4">
             <CardContent className="pt-6">
@@ -525,7 +524,6 @@ const ChurchPage = () => {
           </Card>
         </TabsContent>
 
-        {/* Announcements Tab */}
         <TabsContent value="announcements">
           <Card className="mt-4">
             <CardContent className="pt-6">
@@ -542,7 +540,6 @@ const ChurchPage = () => {
           </Card>
         </TabsContent>
 
-        {/* Programs Tab */}
         <TabsContent value="programs">
           <Card className="mt-4">
             <CardContent className="pt-6">
