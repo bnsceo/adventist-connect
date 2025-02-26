@@ -3,15 +3,25 @@ import { User } from "@/types/social";
 import { UserAvatar } from "./UserAvatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Edit, MapPin, Users } from "lucide-react";
+import { Edit, MapPin, Users, Loader2 } from "lucide-react";
 
 interface ProfileHeaderProps {
   user: User;
   isOwnProfile?: boolean;
   onEditProfile?: () => void;
+  onFollow?: () => void;
+  isFollowing?: boolean;
+  isUpdatingFollow?: boolean;
 }
 
-export const ProfileHeader = ({ user, isOwnProfile, onEditProfile }: ProfileHeaderProps) => {
+export const ProfileHeader = ({ 
+  user, 
+  isOwnProfile, 
+  onEditProfile,
+  onFollow,
+  isFollowing,
+  isUpdatingFollow
+}: ProfileHeaderProps) => {
   return (
     <Card className="relative mb-6 overflow-hidden animate-fade-in">
       {/* Cover Image */}
@@ -51,8 +61,19 @@ export const ProfileHeader = ({ user, isOwnProfile, onEditProfile }: ProfileHead
               Edit Profile
             </Button>
           ) : (
-            <Button className="bg-social-primary hover:bg-social-secondary">
-              Follow
+            <Button 
+              onClick={onFollow}
+              variant={isFollowing ? "outline" : "default"}
+              className="min-w-[100px]"
+              disabled={isUpdatingFollow}
+            >
+              {isUpdatingFollow ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : isFollowing ? (
+                "Following"
+              ) : (
+                "Follow"
+              )}
             </Button>
           )}
         </div>

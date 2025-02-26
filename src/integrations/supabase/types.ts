@@ -260,6 +260,27 @@ export type Database = {
           },
         ]
       }
+      follows: {
+        Row: {
+          created_at: string
+          follower_id: string
+          following_id: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          follower_id: string
+          following_id: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          follower_id?: string
+          following_id?: string
+          id?: string
+        }
+        Relationships: []
+      }
       likes: {
         Row: {
           created_at: string | null
@@ -474,6 +495,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_profile_stats: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          followers_count: number
+          following_count: number
+        }[]
+      }
       insert_daily_devotional: {
         Args: Record<PropertyKey, never>
         Returns: undefined
