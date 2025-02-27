@@ -92,7 +92,7 @@ export const useProfile = (userId?: string) => {
           id: post.id,
           content: post.content,
           timestamp: post.created_at,
-          images: post.attachment_urls || [],
+          images: Array.isArray(post.attachment_urls) ? post.attachment_urls.filter(url => typeof url === 'string') : [],
           likes: post.like_count || 0,
           comments: 0,
           shares: 0,
